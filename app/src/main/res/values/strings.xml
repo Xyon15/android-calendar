@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mon Planning</string>
+    
+    <!-- Navigation -->
+    <string name="calendar_title">TRAVAIL</string>
+    <string name="previous_month">Mois précédent</string>
+    <string name="next_month">Mois suivant</string>
+    <string name="share">Partager</string>
+    
+    <!-- Days of Week -->
+    <string name="monday">Lundi</string>
+    <string name="tuesday">Mardi</string>
+    <string name="wednesday">Mercredi</string>
+    <string name="thursday">Jeudi</string>
+    <string name="friday">Vendredi</string>
+    <string name="saturday">Samedi</string>
+    <string name="sunday">Dimanche</string>
+    
+    <!-- Months -->
+    <string name="january">Janvier</string>
+    <string name="february">Février</string>
+    <string name="march">Mars</string>
+    <string name="april">Avril</string>
+    <string name="may">Mai</string>
+    <string name="june">Juin</string>
+    <string name="july">Juillet</string>
+    <string name="august">Août</string>
+    <string name="september">Septembre</string>
+    <string name="october">Octobre</string>
+    <string name="november">Novembre</string>
+    <string name="december">Décembre</string>
+    
+    <!-- Event Management -->
+    <string name="add_event">Ajouter un événement</string>
+    <string name="edit_event">Modifier l\'événement</string>
+    <string name="delete_event">Supprimer l\'événement</string>
+    <string name="event_title">Libellé</string>
+    <string name="event_description">Description</string>
+    <string name="event_date">Date</string>
+    <string name="event_time">Heure</string>
+    <string name="event_type">Type de Journée</string>
+    <string name="work_hours">Nombre d\'heures travaillées</string>
+    <string name="alert_type">Alerte</string>
+    <string name="save">Sauvegarder</string>
+    <string name="cancel">Annuler</string>
+    
+    <!-- Event Types -->
+    <string name="no_type">Aucun</string>
+    <string name="work_type">Travail</string>
+    <string name="meeting_type">Réunion</string>
+    <string name="personal_type">Personnel</string>
+    <string name="vacation_type">Vacances</string>
+    <string name="training_type">Formation</string>
+    <string name="medical_type">Rendez-vous médical</string>
+    <string name="sport_type">Sport</string>
+    <string name="family_type">Famille</string>
+    <string name="other_type">Autre</string>
+    
+    <!-- Alerts -->
+    <string name="alert_none">Aucun</string>
+    <string name="alert_15min">15 minutes</string>
+    <string name="alert_30min">30 minutes</string>
+    <string name="alert_1hour">1 heure</string>
+    
+    <!-- Day Detail -->
+    <string name="day_detail_title">%1$s %2$d %3$s %4$d</string>
+    <string name="supplementary_hours">Heures supplémentaires/Heures de récupération</string>
+    <string name="appointments">Rendez-vous</string>
+    <string name="hours_format">%1$.2f heures</string>
+    
+    <!-- Event Types Management -->
+    <string name="select_type">Sélectionnez un type</string>
+    <string name="create_new_type">Créer nouveau type</string>
+    <string name="color">Couleur</string>
+    
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="delete">Supprimer</string>
+    <string name="edit">Modifier</string>
+    <string name="confirm_delete">Êtes-vous sûr de vouloir supprimer cet élément ?</string>
+    
+    <!-- Time Format -->
+    <string name="time_format">%1$02d:%2$02d</string>
+    <string name="time_range_format">%1$s - %2$s</string>
+</resources>

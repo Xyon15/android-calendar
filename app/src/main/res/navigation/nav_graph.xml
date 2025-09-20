@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.calendar.app.ui.calendar.CalendarFragment"
+        android:label="@string/calendar_title"
+        tools:layout="@layout/fragment_calendar">
+        <action
+            android:id="@+id/action_calendarFragment_to_dayDetailFragment"
+            app:destination="@id/dayDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dayDetailFragment"
+        android:name="com.calendar.app.ui.daydetail.DayDetailFragment"
+        android:label="Day Detail"
+        tools:layout="@layout/fragment_day_detail">
+        <argument
+            android:name="selectedDate"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_dayDetailFragment_to_addEventFragment"
+            app:destination="@id/addEventFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addEventFragment"
+        android:name="com.calendar.app.ui.event.AddEventFragment"
+        android:label="@string/add_event"
+        tools:layout="@layout/fragment_add_event">
+        <argument
+            android:name="selectedDate"
+            app:argType="long" />
+        <argument
+            android:name="eventId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <action
+            android:id="@+id/action_addEventFragment_to_selectEventTypeFragment"
+            app:destination="@id/selectEventTypeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectEventTypeFragment"
+        android:name="com.calendar.app.ui.event.SelectEventTypeFragment"
+        android:label="@string/select_type"
+        tools:layout="@layout/fragment_select_event_type" />
+
+</navigation>

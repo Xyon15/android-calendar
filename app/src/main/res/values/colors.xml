@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="primary_color">#3F7CAC</color>
+    <color name="primary_dark">#2C5B87</color>
+    <color name="accent_color">#4CAF50</color>
+    
+    <!-- Background Colors -->
+    <color name="background_color">#F5F5F5</color>
+    <color name="surface_color">#FFFFFF</color>
+    <color name="day_default_background">#FFFFFF</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_on_primary">#FFFFFF</color>
+    
+    <!-- Event Type Colors (based on your images) -->
+    <color name="event_purple">#8E44AD</color>
+    <color name="event_purple_light">#D8BFD8</color>
+    <color name="event_pink">#E67E22</color>
+    <color name="event_green">#27AE60</color>
+    <color name="event_blue">#3498DB</color>
+    <color name="event_cyan">#17A2B8</color>
+    <color name="event_brown">#8D6E63</color>
+    <color name="event_yellow">#F1C40F</color>
+    <color name="event_red">#E74C3C</color>
+    
+    <!-- Special Day States -->
+    <color name="today_marker">#FF5722</color>
+    <color name="selected_day">#E3F2FD</color>
+    <color name="weekend_text">#9E9E9E</color>
+    <color name="other_month_text">#BDBDBD</color>
+    
+    <!-- Component Colors -->
+    <color name="divider_color">#E0E0E0</color>
+    <color name="fab_color">#2196F3</color>
+    <color name="button_green">#4CAF50</color>
+    <color name="button_red">#F44336</color>
+    
+    <!-- Transparency -->
+    <color name="black_overlay">#66000000</color>
+    <color name="white_overlay">#66FFFFFF</color>
+</resources>

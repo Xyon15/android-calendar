@@ -1,0 +1,1 @@
+[{"navFile":"src\\main\\res\\navigation\\nav_graph.xml","javaFiles":["com.calendar.app.ui.calendar.CalendarFragmentDirections","com.calendar.app.ui.daydetail.DayDetailFragmentDirections","com.calendar.app.ui.daydetail.DayDetailFragmentArgs","com.calendar.app.ui.event.AddEventFragmentDirections","com.calendar.app.ui.event.AddEventFragmentArgs"]}]
