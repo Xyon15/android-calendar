@@ -31,7 +31,9 @@ abstract class CalendarDatabase : RoomDatabase() {
                     context.applicationContext,
                     CalendarDatabase::class.java,
                     "calendar_database"
-                ).build()
+                )
+                .fallbackToDestructiveMigration()
+                .build()
                 INSTANCE = instance
                 instance
             }

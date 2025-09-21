@@ -8,47 +8,113 @@
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.calendar.app.ui.calendar.CalendarFragment"
-        android:label="@string/calendar_title"
+        android:label=""
         tools:layout="@layout/fragment_calendar">
+        
         <action
-            android:id="@+id/action_calendarFragment_to_dayDetailFragment"
-            app:destination="@id/dayDetailFragment" />
+            android:id="@+id/action_calendar_to_add_event"
+            app:destination="@id/addEventFragment" />
+            
+        <action
+            android:id="@+id/action_calendar_to_day_menu"
+            app:destination="@id/dayMenuBottomSheetFragment" />
+            
     </fragment>
 
     <fragment
-        android:id="@+id/dayDetailFragment"
-        android:name="com.calendar.app.ui.daydetail.DayDetailFragment"
-        android:label="Day Detail"
-        tools:layout="@layout/fragment_day_detail">
-        <argument
-            android:name="selectedDate"
-            app:argType="long" />
+        android:id="@+id/dayTypesManagementFragment"
+        android:name="com.calendar.app.ui.calendar.DayTypesManagementFragment"
+        android:label="Types de journées">
+        
         <action
-            android:id="@+id/action_dayDetailFragment_to_addEventFragment"
-            app:destination="@id/addEventFragment" />
+            android:id="@+id/action_day_types_to_form"
+            app:destination="@id/dayTypeFormFragment" />
+            
+    </fragment>
+
+    <fragment
+        android:id="@+id/dayTypeFormFragment"
+        android:name="com.calendar.app.ui.calendar.DayTypeFormFragment"
+        android:label="Formulaire type de journée">
+        
+        <argument
+            android:name="dayTypeId"
+            app:argType="long"
+            android:defaultValue="0L" />
+            
     </fragment>
 
     <fragment
         android:id="@+id/addEventFragment"
-        android:name="com.calendar.app.ui.event.AddEventFragment"
-        android:label="@string/add_event"
-        tools:layout="@layout/fragment_add_event">
+        android:name="com.calendar.app.ui.calendar.AddEventFragment"
+        android:label="✨ Nouvel événement">
+        
         <argument
             android:name="selectedDate"
-            app:argType="long" />
+            app:argType="string"
+            android:defaultValue="" />
+            
         <argument
-            android:name="eventId"
-            app:argType="long"
-            android:defaultValue="-1L" />
-        <action
-            android:id="@+id/action_addEventFragment_to_selectEventTypeFragment"
-            app:destination="@id/selectEventTypeFragment" />
+            android:name="eventType"
+            app:argType="string"
+            android:defaultValue="" />
+            
     </fragment>
 
-    <fragment
-        android:id="@+id/selectEventTypeFragment"
-        android:name="com.calendar.app.ui.event.SelectEventTypeFragment"
-        android:label="@string/select_type"
-        tools:layout="@layout/fragment_select_event_type" />
+    <dialog
+        android:id="@+id/dayMenuBottomSheetFragment"
+        android:name="com.calendar.app.ui.calendar.DayMenuBottomSheetFragment"
+        android:label="Menu du jour">
+        
+        <argument
+            android:name="selectedDate"
+            app:argType="string"
+            android:defaultValue="" />
+            
+        <action
+            android:id="@+id/action_day_menu_to_add_event"
+            app:destination="@id/addEventFragment" />
+            
+        <action
+            android:id="@+id/action_day_menu_to_day_types"
+            app:destination="@id/dayTypeBottomSheetFragment" />
+            
+        <action
+            android:id="@+id/action_day_menu_to_appointment_types"
+            app:destination="@id/appointmentTypeBottomSheetFragment" />
+            
+    </dialog>
+
+    <dialog
+        android:id="@+id/dayTypeBottomSheetFragment"
+        android:name="com.calendar.app.ui.calendar.DayTypeBottomSheetFragment"
+        android:label="Types de journée">
+        
+        <argument
+            android:name="selectedDate"
+            app:argType="string"
+            android:defaultValue="" />
+            
+        <action
+            android:id="@+id/action_day_type_to_add_event"
+            app:destination="@id/addEventFragment" />
+            
+    </dialog>
+
+    <dialog
+        android:id="@+id/appointmentTypeBottomSheetFragment"
+        android:name="com.calendar.app.ui.calendar.AppointmentTypeBottomSheetFragment"
+        android:label="Types de rendez-vous">
+        
+        <argument
+            android:name="selectedDate"
+            app:argType="string"
+            android:defaultValue="" />
+            
+        <action
+            android:id="@+id/action_appointment_type_to_add_event"
+            app:destination="@id/addEventFragment" />
+            
+    </dialog>
 
 </navigation>

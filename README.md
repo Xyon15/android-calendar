@@ -1,4 +1,4 @@
-# Mon Planning - Calendrier Android !
+# Mon Planning - Calendrier Android 
 
 ## 🚀 COMMANDES DE COMPILATION
 
@@ -15,7 +15,7 @@ set JAVA_HOME=C:\Program Files\Android\Android Studio\jbr
 
 ## 📁 SCRIPTS DISPONIBLES
 - **`clean-gradle.bat`** → Nettoyage automatique complet
-- **`gradlew.bat`** → Gradle Wrapper Windows (maintenant fonctionnel)
+- **`gradlew.bat`** → Gradle Wrapper Windows
 
 ---
 
@@ -36,11 +36,6 @@ Une application de calendrier Android moderne et intuitive. Cette application pe
   - Travail (violet)
   - Réunion (bleu)
   - Personnel (vert)
-  - Vacances (cyan)
-  - Formation (orange)
-  - Rendez-vous médical (rouge)
-  - Sport (jaune)
-  - Famille (rose)
   - Et plus selon vos besoins...
 
 ### ⏰ Fonctionnalités Avancées
@@ -83,7 +78,7 @@ Une application de calendrier Android moderne et intuitive. Cette application pe
 ```
 app/src/main/java/com/calendar/app/
 ├── data/
-│   ├── dao/                 # Data Access Objects
+│   ├── dao/                # Data Access Objects
 │   ├── database/           # Configuration Room
 │   ├── model/              # Entités de données
 │   └── repository/         # Repository pattern

@@ -40,6 +40,8 @@ class CalendarRepository(
     
     suspend fun deleteEventById(id: Long) = eventDao.deleteById(id)
     
+    suspend fun deleteAllEvents() = eventDao.deleteAllEvents()
+    
     suspend fun getEventCountByDate(date: Long): Int = eventDao.getEventCountByDate(date)
     
     suspend fun getTotalWorkHoursByDateRange(startDate: Long, endDate: Long): Float = 
@@ -61,27 +63,7 @@ class CalendarRepository(
     
     suspend fun deleteEventTypeById(id: Long) = eventTypeDao.deleteById(id)
     
-    suspend fun getEventTypeCount(): Int = eventTypeDao.getCount()
+    suspend fun deleteAllEventTypes() = eventTypeDao.deleteAllEventTypes()
     
-    // Utility functions
-    suspend fun initializeDefaultEventTypes() {
-        if (getEventTypeCount() == 0) {
-            val defaultTypes = listOf(
-                EventType(name = "Aucun", color = "#FFFFFF", isDefault = true),
-                EventType(name = "Travail", color = "#8E44AD", workHours = 8.0f),
-                EventType(name = "Réunion", color = "#3498DB", workHours = 2.0f),
-                EventType(name = "Personnel", color = "#27AE60"),
-                EventType(name = "Vacances", color = "#17A2B8"),
-                EventType(name = "Formation", color = "#E67E22"),
-                EventType(name = "Rendez-vous médical", color = "#E74C3C"),
-                EventType(name = "Sport", color = "#F1C40F"),
-                EventType(name = "Famille", color = "#E91E63"),
-                EventType(name = "Autre", color = "#95A5A6")
-            )
-            
-            defaultTypes.forEach { type ->
-                insertEventType(type)
-            }
-        }
-    }
+    suspend fun getEventTypeCount(): Int = eventTypeDao.getCount()
 }

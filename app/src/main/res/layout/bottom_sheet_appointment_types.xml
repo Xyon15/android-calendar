@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <!-- En-tête -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="24dp"
+        android:background="@color/primary_color"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Choisir le type de rendez-vous"
+            android:textColor="@color/text_on_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp" />
+
+    </LinearLayout>
+
+    <!-- Types de rendez-vous -->
+    <LinearLayout
+        android:id="@+id/layoutMedical"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
+        android:padding="16dp"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_medical"
+            app:tint="@color/red_color"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Médical"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutProfessional"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
+        android:padding="16dp"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_work"
+            app:tint="@color/blue_color"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Professionnel"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutPersonal"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
+        android:padding="16dp"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_person"
+            app:tint="@color/green_color"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Personnel"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutFamily"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
+        android:padding="16dp"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_family"
+            app:tint="@color/orange_color"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Famille"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutOther"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="?attr/selectableItemBackground"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_more"
+            app:tint="@color/purple_color"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Autre"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary" />
+
+    </LinearLayout>
+
+</LinearLayout>

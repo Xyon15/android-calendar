@@ -47,8 +47,8 @@ class CalendarAdapter(
             Log.d("CalendarAdapter", "Binding day ${calendarDay.dayOfMonth} (${if(calendarDay.isCurrentMonth) "current" else "other"} month)")
             binding.tvDayNumber.text = calendarDay.dayOfMonth.toString()
             
-            // Set click listener
-            binding.root.setOnClickListener {
+            // Set click listener on the day container, not the root
+            binding.dayContainer.setOnClickListener {
                 Log.d("CalendarAdapter", "Day clicked: ${calendarDay.dayOfMonth}, date: ${calendarDay.date}")
                 onDayClick(calendarDay.date)
             }
@@ -76,23 +76,31 @@ class CalendarAdapter(
                         )
                     }
                     
-                    // Show event time if available
+                    // Show event time if available (for appointments with time)
                     val firstEvent = dayEvents.first().event
                     if (firstEvent.startTime != null) {
                         binding.tvEventTime.text = "${firstEvent.startTime} - ${firstEvent.title}"
                         binding.tvEventTime.visibility = android.view.View.VISIBLE
                     } else {
+                        // For day types (no time), don't show time but keep the color
                         binding.tvEventTime.visibility = android.view.View.GONE
+                    }
+                    
+                    // Add subtle indicator for today even when colored
+                    if (calendarDay.isToday) {
+                        binding.dayMarker.visibility = android.view.View.VISIBLE
+                    } else {
+                        binding.dayMarker.visibility = android.view.View.GONE
                     }
                 }
                 calendarDay.isToday -> {
-                    binding.dayContainer.setBackgroundColor(
-                        ContextCompat.getColor(context, R.color.today_marker)
-                    )
+                    // Au lieu d'une couleur de fond pleine, utilisons une bordure subtile
+                    binding.dayContainer.setBackgroundResource(R.drawable.today_border)
                     binding.tvDayNumber.setTextColor(
-                        ContextCompat.getColor(context, android.R.color.white)
+                        ContextCompat.getColor(context, R.color.today_text)
                     )
                     binding.tvEventTime.visibility = android.view.View.GONE
+                    binding.dayMarker.visibility = android.view.View.GONE
                 }
                 calendarDay.isSelected -> {
                     binding.dayContainer.setBackgroundColor(
@@ -102,6 +110,7 @@ class CalendarAdapter(
                         ContextCompat.getColor(context, R.color.text_primary)
                     )
                     binding.tvEventTime.visibility = android.view.View.GONE
+                    binding.dayMarker.visibility = android.view.View.GONE
                 }
                 else -> {
                     binding.dayContainer.setBackgroundColor(
@@ -115,14 +124,8 @@ class CalendarAdapter(
                         }
                     )
                     binding.tvEventTime.visibility = android.view.View.GONE
+                    binding.dayMarker.visibility = android.view.View.GONE
                 }
-            }
-            
-            // Show today marker
-            if (calendarDay.isToday && dayEvents.isEmpty()) {
-                binding.dayMarker.visibility = android.view.View.VISIBLE
-            } else {
-                binding.dayMarker.visibility = android.view.View.GONE
             }
             
             // Set click listener

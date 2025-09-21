@@ -49,4 +49,7 @@ interface EventDao {
     
     @Query("SELECT SUM(workHours) FROM events WHERE date BETWEEN :startDate AND :endDate")
     suspend fun getTotalWorkHoursByDateRange(startDate: Long, endDate: Long): Float?
+    
+    @Query("DELETE FROM events")
+    suspend fun deleteAllEvents()
 }

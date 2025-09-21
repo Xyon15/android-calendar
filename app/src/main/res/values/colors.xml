@@ -28,6 +28,8 @@
     
     <!-- Special Day States -->
     <color name="today_marker">#FF5722</color>
+    <color name="today_border">#FF5722</color>
+    <color name="today_text">#FF5722</color>
     <color name="selected_day">#E3F2FD</color>
     <color name="weekend_text">#9E9E9E</color>
     <color name="other_month_text">#BDBDBD</color>
@@ -37,6 +39,14 @@
     <color name="fab_color">#2196F3</color>
     <color name="button_green">#4CAF50</color>
     <color name="button_red">#F44336</color>
+    
+    <!-- Simple Colors for Icons -->
+    <color name="red_color">#E74C3C</color>
+    <color name="blue_color">#3498DB</color>
+    <color name="green_color">#27AE60</color>
+    <color name="orange_color">#E67E22</color>
+    <color name="purple_color">#8E44AD</color>
+    <color name="gray_color">#95A5A6</color>
     
     <!-- Transparency -->
     <color name="black_overlay">#66000000</color>

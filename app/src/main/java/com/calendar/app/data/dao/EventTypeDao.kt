@@ -29,6 +29,9 @@ interface EventTypeDao {
     @Query("DELETE FROM event_types WHERE id = :id")
     suspend fun deleteById(id: Long)
     
+    @Query("DELETE FROM event_types")
+    suspend fun deleteAllEventTypes()
+    
     @Query("SELECT COUNT(*) FROM event_types")
     suspend fun getCount(): Int
 }

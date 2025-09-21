@@ -43,13 +43,7 @@ class CalendarViewModel(private val repository: CalendarRepository) : ViewModel(
         )
     
     init {
-        initializeData()
-    }
-    
-    private fun initializeData() {
-        viewModelScope.launch {
-            repository.initializeDefaultEventTypes()
-        }
+        // Plus d'initialisation automatique des types d'événements
     }
     
     fun selectDate(date: Long) {
@@ -154,6 +148,25 @@ class CalendarViewModel(private val repository: CalendarRepository) : ViewModel(
         val cal2 = Calendar.getInstance()
         cal2.timeInMillis = timestamp
         return isSameDay(calendar, cal2)
+    }
+    
+    // Event management methods for AddEventFragment
+    suspend fun insertEvent(event: com.calendar.app.data.model.Event) {
+        repository.insertEvent(event)
+    }
+    
+    suspend fun updateEvent(event: com.calendar.app.data.model.Event) {
+        repository.updateEvent(event)
+    }
+    
+    suspend fun deleteEvent(event: com.calendar.app.data.model.Event) {
+        repository.deleteEvent(event)
+    }
+    
+    fun getAllEventTypes() = repository.getAllEventTypes()
+    
+    suspend fun insertEventType(eventType: com.calendar.app.data.model.EventType) {
+        repository.insertEventType(eventType)
     }
 }
 

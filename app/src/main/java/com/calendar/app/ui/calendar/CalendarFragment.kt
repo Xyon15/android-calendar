@@ -15,6 +15,7 @@ import com.calendar.app.data.database.CalendarDatabase
 import com.calendar.app.data.repository.CalendarRepository
 import com.calendar.app.databinding.FragmentCalendarBinding
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class CalendarFragment : Fragment() {
     
@@ -55,16 +56,19 @@ class CalendarFragment : Fragment() {
     private fun setupRecyclerView() {
         calendarAdapter = CalendarAdapter { date ->
             Log.d("CalendarFragment", "Date clicked: $date")
-            Toast.makeText(requireContext(), "Date sélectionnée", Toast.LENGTH_SHORT).show()
-            viewModel.selectDate(date)
-            // Navigate to day detail
-            try {
-                val action = CalendarFragmentDirections.actionCalendarFragmentToDayDetailFragment(date)
-                findNavController().navigate(action)
-            } catch (e: Exception) {
-                Log.e("CalendarFragment", "Navigation error", e)
-                Toast.makeText(requireContext(), "Erreur de navigation", Toast.LENGTH_SHORT).show()
-            }
+            
+            // Extraire le jour du mois à partir de la date
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = date
+            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+            val month = calendar.get(Calendar.MONTH) + 1
+            val year = calendar.get(Calendar.YEAR)
+            
+            Log.d("CalendarFragment", "Date sélectionnée: $dayOfMonth/$month/$year")
+            
+            // Afficher le bottom sheet au lieu de naviguer directement
+            val selectedDateString = String.format("%02d/%02d/%04d", dayOfMonth, month, year)
+            showDayMenuBottomSheet(selectedDateString)
         }
         
         binding.calendarRecyclerView.apply {
@@ -109,5 +113,15 @@ class CalendarFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showDayMenuBottomSheet(selectedDate: String) {
+        try {
+            val action = CalendarFragmentDirections.actionCalendarToDayMenu(selectedDate)
+            findNavController().navigate(action)
+        } catch (e: Exception) {
+            Log.e("CalendarFragment", "Error showing day menu: ${e.message}")
+            Toast.makeText(requireContext(), "📅 Date sélectionnée: $selectedDate", Toast.LENGTH_SHORT).show()
+        }
     }
 }
