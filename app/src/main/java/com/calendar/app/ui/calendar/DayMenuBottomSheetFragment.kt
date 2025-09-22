@@ -27,6 +27,7 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var appointmentsAdapter: AppointmentsAdapter
     
     private lateinit var tvSelectedDate: TextView
+    private lateinit var tvDayTypeTitle: TextView
     private lateinit var rvAppointments: RecyclerView
     private lateinit var layoutDayType: View
     private lateinit var layoutAddAppointment: View
@@ -49,6 +50,7 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
         repository = CalendarRepository(database.eventDao(), database.eventTypeDao())
         
         initializeViews(view)
+        checkCurrentDayType()
         setupRecyclerView()
         setupClickListeners()
         loadData()
@@ -56,6 +58,7 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun initializeViews(view: View) {
         tvSelectedDate = view.findViewById(com.calendar.app.R.id.tvSelectedDate)
+        tvDayTypeTitle = view.findViewById(com.calendar.app.R.id.tvDayTypeTitle)
         rvAppointments = view.findViewById(com.calendar.app.R.id.rvAppointments)
         layoutDayType = view.findViewById(com.calendar.app.R.id.layoutDayType)
         layoutAddAppointment = view.findViewById(com.calendar.app.R.id.layoutAddAppointment)
@@ -137,6 +140,37 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
             .actionDayMenuToAddEvent(args.selectedDate, eventType)
         findNavController().navigate(action)
         dismiss()
+    }
+
+    private fun checkCurrentDayType() {
+        lifecycleScope.launch {
+            try {
+                // Convertir la date pour chercher les événements
+                val inputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val date = inputFormat.parse(args.selectedDate)
+                val dateTimestamp = date?.time ?: 0L
+
+                val existingEvents = repository.getEventsWithTypeByDate(dateTimestamp).first()
+                
+                // Chercher un événement de type journée (startTime = null)
+                val currentDayTypeEvent = existingEvents.find { 
+                    it.event.startTime == null 
+                }
+                
+                if (currentDayTypeEvent != null) {
+                    // Il y a déjà un type de journée, afficher son nom dans le titre
+                    tvDayTypeTitle.text = currentDayTypeEvent.eventType.name
+                    Log.d("DayMenuBottomSheet", "Current day type found: ${currentDayTypeEvent.eventType.name}")
+                } else {
+                    // Pas de type de journée, garder le titre par défaut
+                    tvDayTypeTitle.text = "Définir le type de cette journée"
+                    Log.d("DayMenuBottomSheet", "No current day type found")
+                }
+            } catch (e: Exception) {
+                Log.e("DayMenuBottomSheet", "Error checking current day type", e)
+                tvDayTypeTitle.text = "Définir le type de cette journée"
+            }
+        }
     }
 
     private fun loadData() {
