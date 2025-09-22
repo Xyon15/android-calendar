@@ -39,19 +39,20 @@ class DayTypeFormFragment : Fragment() {
     private var editingDayTypeId: Long? = null
     private var selectedColor: String = "#3498DB"
     
+    // Couleurs pour la création des types de journées
     private val availableColors = listOf(
-        ColorItem("Bleu", "#3498DB"),
-        ColorItem("Rouge", "#E74C3C"),
-        ColorItem("Vert", "#27AE60"),
-        ColorItem("Orange", "#E67E22"),
-        ColorItem("Violet", "#8E44AD"),
-        ColorItem("Turquoise", "#1ABC9C"),
-        ColorItem("Jaune", "#F1C40F"),
-        ColorItem("Rose", "#E91E63"),
-        ColorItem("Indigo", "#3F51B5"),
-        ColorItem("Marron", "#8D6E63"),
-        ColorItem("Gris", "#95A5A6"),
-        ColorItem("Noir", "#2C3E50")
+        ColorItem("Bleu", "#043EAF"),   
+        ColorItem("Rouge", "#FF0A0A"),             
+        ColorItem("Vert", "#32CD32"),                
+        ColorItem("Orange", "#FF8C00"),             
+        ColorItem("Ciel", "#40E0D0"),               
+        ColorItem("Jaune", "#FFD700"),               
+        ColorItem("Rose", "#FF1493"),               
+        ColorItem("Violet", "#8E44AD"),              
+        ColorItem("Marron", "#403934"),           
+        ColorItem("Gris", "#C0C0C0"),               
+        ColorItem("Noir", "#1C1C1C"),                
+        ColorItem("Nuit", "#310366"),             
     )
 
     data class ColorItem(val name: String, val hex: String)

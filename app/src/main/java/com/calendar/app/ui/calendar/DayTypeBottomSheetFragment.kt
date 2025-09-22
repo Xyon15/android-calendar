@@ -119,16 +119,31 @@ class DayTypeBottomSheetFragment : BottomSheetDialogFragment() {
                 val dayTypes = repository.getAllEventTypes().first()
                 Log.d("DayTypeBottomSheet", "Loaded ${dayTypes.size} day types")
                 
-                if (dayTypes.isEmpty()) {
-                    Log.d("DayTypeBottomSheet", "No day types found, showing empty message")
-                    tvEmptyMessage.visibility = View.VISIBLE
-                    rvUserDayTypes.visibility = View.GONE
+                // Créer une liste avec l'option "Aucun" en haut
+                val dayTypesWithNone = mutableListOf<EventType>()
+                
+                // Ajouter l'option "Aucun" avec un ID spécial
+                val noneOption = EventType(
+                    id = -1,
+                    name = "Aucun",
+                    description = "Retirer le type de journée",
+                    color = "#E0E0E0" // Gris clair
+                )
+                dayTypesWithNone.add(noneOption)
+                
+                // Ajouter tous les types existants
+                dayTypesWithNone.addAll(dayTypes)
+                
+                if (dayTypesWithNone.size == 1) { // Seulement l'option "Aucun"
+                    Log.d("DayTypeBottomSheet", "No custom day types found, showing only 'Aucun' option")
                 } else {
-                    Log.d("DayTypeBottomSheet", "Showing ${dayTypes.size} day types in RecyclerView")
-                    tvEmptyMessage.visibility = View.GONE
-                    rvUserDayTypes.visibility = View.VISIBLE
-                    userDayTypesAdapter.submitList(dayTypes)
+                    Log.d("DayTypeBottomSheet", "Showing ${dayTypesWithNone.size} day types (including 'Aucun')")
                 }
+                
+                tvEmptyMessage.visibility = View.GONE
+                rvUserDayTypes.visibility = View.VISIBLE
+                userDayTypesAdapter.submitList(dayTypesWithNone)
+                
             } catch (e: Exception) {
                 Log.e("DayTypeBottomSheet", "Error loading day types", e)
                 tvEmptyMessage.visibility = View.VISIBLE
@@ -159,40 +174,58 @@ class DayTypeBottomSheetFragment : BottomSheetDialogFragment() {
                 
                 // Vérifier s'il y a déjà un événement de type journée pour cette date
                 val existingEvents = repository.getEventsWithTypeByDate(dateTimestamp).first()
-                val existingDayTypeEvent = existingEvents.find { 
-                    it.event.eventTypeId == dayType.id && it.event.startTime == null 
+                val existingDayTypeEvents = existingEvents.filter { 
+                    it.event.startTime == null // Tous les événements de type journée
                 }
                 
-                if (existingDayTypeEvent != null) {
-                    // Supprimer l'événement existant si c'est le même type
-                    repository.deleteEvent(existingDayTypeEvent.event)
-                    Log.d("DayTypeBottomSheet", "Removed existing day type event")
-                } else {
-                    // Supprimer tout autre événement de type journée pour cette date
-                    existingEvents.forEach { eventWithType ->
-                        if (eventWithType.event.startTime == null) { // C'est un type de journée
-                            repository.deleteEvent(eventWithType.event)
-                        }
+                // Si l'option "Aucun" est sélectionnée (ID = -1)
+                if (dayType.id == -1L) {
+                    // Supprimer tous les événements de type journée pour cette date
+                    existingDayTypeEvents.forEach { eventWithType ->
+                        repository.deleteEvent(eventWithType.event)
                     }
-                    
-                    // Créer le nouvel événement de type journée
-                    val newEvent = Event(
-                        title = dayType.name,
-                        description = "Type de journée: ${dayType.name}",
-                        date = dateTimestamp,
-                        eventTypeId = dayType.id,
-                        startTime = null, // Pas d'heure = type de journée
-                        endTime = null
-                    )
-                    
-                    repository.insertEvent(newEvent)
-                    Log.d("DayTypeBottomSheet", "Created new day type event for timestamp: $dateTimestamp")
+                    Log.d("DayTypeBottomSheet", "Removed all day type events for this date")
                     
                     Toast.makeText(
                         requireContext(), 
-                        "Type de journée '${dayType.name}' appliqué", 
+                        "Type de journée retiré", 
                         Toast.LENGTH_SHORT
                     ).show()
+                } else {
+                    // Logique normale pour appliquer un type de journée
+                    val existingDayTypeEvent = existingDayTypeEvents.find { 
+                        it.event.eventTypeId == dayType.id
+                    }
+                    
+                    if (existingDayTypeEvent != null) {
+                        // Supprimer l'événement existant si c'est le même type
+                        repository.deleteEvent(existingDayTypeEvent.event)
+                        Log.d("DayTypeBottomSheet", "Removed existing day type event")
+                    } else {
+                        // Supprimer tout autre événement de type journée pour cette date
+                        existingDayTypeEvents.forEach { eventWithType ->
+                            repository.deleteEvent(eventWithType.event)
+                        }
+                        
+                        // Créer le nouvel événement de type journée
+                        val newEvent = Event(
+                            title = dayType.name,
+                            description = "Type de journée: ${dayType.name}",
+                            date = dateTimestamp,
+                            eventTypeId = dayType.id,
+                            startTime = null, // Pas d'heure = type de journée
+                            endTime = null
+                        )
+                        
+                        repository.insertEvent(newEvent)
+                        Log.d("DayTypeBottomSheet", "Created new day type event for timestamp: $dateTimestamp")
+                        
+                        Toast.makeText(
+                            requireContext(), 
+                            "Type de journée '${dayType.name}' appliqué", 
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
                 
                 dismiss()
