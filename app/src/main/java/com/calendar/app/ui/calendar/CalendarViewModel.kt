@@ -71,6 +71,11 @@ class CalendarViewModel(private val repository: CalendarRepository) : ViewModel(
         _currentMonth.value = newCalendar
     }
     
+    fun navigateToToday() {
+        val today = Calendar.getInstance()
+        _currentMonth.value = today
+    }
+    
     fun getCurrentMonthTitle(): String {
         return getCurrentMonthTitle(_currentMonth.value)
     }

@@ -168,4 +168,15 @@ class CalendarFragment : Fragment() {
         )
         return if (month in 1..12) monthNames[month - 1] else "Mois inconnu"
     }
+
+    fun navigateToToday() {
+        // Utiliser le ViewModel pour naviguer vers aujourd'hui
+        viewModel.navigateToToday()
+        
+        Toast.makeText(
+            requireContext(), 
+            "Navigation vers aujourd'hui", 
+            Toast.LENGTH_SHORT
+        ).show()
+    }
 }

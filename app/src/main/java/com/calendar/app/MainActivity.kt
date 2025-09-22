@@ -13,6 +13,7 @@ import com.calendar.app.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     
@@ -50,11 +51,8 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.open()
         }
         
-        // Setup share button
-        binding.btnShare.setOnClickListener {
-            // Implement share functionality
-            shareSchedule()
-        }
+        // Setup today button
+        setupTodayButton()
     }
     
     private fun setupNavigationDrawer() {
@@ -91,7 +89,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-    
+
     override fun onSupportNavigateUp(): Boolean {
         return try {
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
@@ -101,10 +99,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
     
+    private fun setupTodayButton() {
+        // Afficher le numéro du jour actuel
+        val today = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        binding.btnToday.text = today.toString()
+        
+        // Action pour retourner au jour actuel
+        binding.btnToday.setOnClickListener {
+            navigateToToday()
+        }
+    }
     
-    private fun shareSchedule() {
-        // Implementation for sharing schedule
-        // This could export to calendar app or share as text/image
+    private fun navigateToToday() {
+        // Obtenir une référence au CalendarFragment et naviguer vers aujourd'hui
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
+        val currentFragment = navHostFragment?.childFragmentManager?.fragments?.firstOrNull()
+        
+        if (currentFragment is com.calendar.app.ui.calendar.CalendarFragment) {
+            // Si on est déjà sur le CalendarFragment, utiliser son ViewModel pour naviguer vers aujourd'hui
+            currentFragment.navigateToToday()
+        } else {
+            // Sinon, naviguer vers le CalendarFragment (qui affichera le mois actuel par défaut)
+            navHostFragment?.navController?.navigate(R.id.calendarFragment)
+        }
     }
     
     // Méthodes pour contrôler la visibilité du menu hamburger
