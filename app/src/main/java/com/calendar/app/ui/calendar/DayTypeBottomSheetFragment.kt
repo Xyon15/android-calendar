@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.calendar.app.MainActivity
 import com.calendar.app.R
 import com.calendar.app.data.database.CalendarDatabase
 import com.calendar.app.data.model.Event

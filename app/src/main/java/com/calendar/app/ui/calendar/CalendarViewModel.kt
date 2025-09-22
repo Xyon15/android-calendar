@@ -67,7 +67,7 @@ class CalendarViewModel(private val repository: CalendarRepository) : ViewModel(
     fun navigateToMonth(year: Int, month: Int) {
         val newCalendar = Calendar.getInstance()
         newCalendar.set(Calendar.YEAR, year)
-        newCalendar.set(Calendar.MONTH, month)
+        newCalendar.set(Calendar.MONTH, month - 1) // Calendar months are 0-based
         _currentMonth.value = newCalendar
     }
     

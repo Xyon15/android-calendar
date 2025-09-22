@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.calendar.app.MainActivity
 import com.calendar.app.R
 import com.calendar.app.data.database.CalendarDatabase
 import com.calendar.app.data.model.EventType
@@ -38,6 +39,9 @@ class DayTypesManagementFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        // Masquer le menu hamburger sur cette page
+        (activity as? MainActivity)?.hideMenuButton()
         
         val database = CalendarDatabase.getDatabase(requireContext())
         repository = CalendarRepository(database.eventDao(), database.eventTypeDao())
@@ -126,5 +130,12 @@ class DayTypesManagementFragment : Fragment() {
                 // Gérer l'erreur
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        
+        // Réafficher le menu hamburger quand on quitte cette page
+        (activity as? MainActivity)?.showMenuButton()
     }
 }

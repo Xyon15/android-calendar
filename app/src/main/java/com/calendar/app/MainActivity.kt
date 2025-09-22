@@ -106,4 +106,13 @@ class MainActivity : AppCompatActivity() {
         // Implementation for sharing schedule
         // This could export to calendar app or share as text/image
     }
+    
+    // Méthodes pour contrôler la visibilité du menu hamburger
+    fun hideMenuButton() {
+        binding.btnMenu.visibility = android.view.View.GONE
+    }
+    
+    fun showMenuButton() {
+        binding.btnMenu.visibility = android.view.View.VISIBLE
+    }
 }

@@ -19,7 +19,16 @@
             android:id="@+id/action_calendar_to_day_menu"
             app:destination="@id/dayMenuBottomSheetFragment" />
             
+        <action
+            android:id="@+id/action_calendar_to_year_month_picker"
+            app:destination="@id/yearMonthPickerFragment" />
+            
     </fragment>
+
+    <fragment
+        android:id="@+id/yearMonthPickerFragment"
+        android:name="com.calendar.app.ui.calendar.YearMonthPickerFragment"
+        android:label="Sélectionner mois" />
 
     <fragment
         android:id="@+id/dayTypesManagementFragment"

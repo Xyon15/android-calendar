@@ -51,6 +51,7 @@ class CalendarFragment : Fragment() {
         setupRecyclerView()
         setupClickListeners()
         observeViewModel()
+        setupFragmentResultListener()
     }
     
     private fun setupRecyclerView() {
@@ -89,6 +90,12 @@ class CalendarFragment : Fragment() {
             Toast.makeText(requireContext(), "Mois suivant", Toast.LENGTH_SHORT).show()
             viewModel.navigateToNextMonth()
         }
+        
+        // Ajouter le clic sur le titre du mois pour ouvrir le sélecteur
+        binding.tvCurrentMonth.setOnClickListener {
+            Log.d("CalendarFragment", "Month title clicked - opening year/month picker")
+            openYearMonthPicker()
+        }
     }
     
     private fun observeViewModel() {
@@ -123,5 +130,42 @@ class CalendarFragment : Fragment() {
             Log.e("CalendarFragment", "Error showing day menu: ${e.message}")
             Toast.makeText(requireContext(), "📅 Date sélectionnée: $selectedDate", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun openYearMonthPicker() {
+        try {
+            val action = CalendarFragmentDirections.actionCalendarToYearMonthPicker()
+            findNavController().navigate(action)
+        } catch (e: Exception) {
+            Log.e("CalendarFragment", "Error opening year/month picker: ${e.message}")
+            Toast.makeText(requireContext(), "Ouverture du sélecteur de mois...", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setupFragmentResultListener() {
+        // Écouter le résultat de la sélection de mois
+        parentFragmentManager.setFragmentResultListener("month_selection", this) { _, bundle ->
+            val selectedYear = bundle.getInt("selected_year")
+            val selectedMonth = bundle.getInt("selected_month")
+            
+            Log.d("CalendarFragment", "Month selected: $selectedMonth/$selectedYear")
+            
+            // Mettre à jour le calendrier avec le mois sélectionné
+            viewModel.navigateToMonth(selectedYear, selectedMonth)
+            
+            Toast.makeText(
+                requireContext(), 
+                "Navigué vers ${getMonthName(selectedMonth)} $selectedYear", 
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun getMonthName(month: Int): String {
+        val monthNames = arrayOf(
+            "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+            "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+        )
+        return if (month in 1..12) monthNames[month - 1] else "Mois inconnu"
     }
 }
