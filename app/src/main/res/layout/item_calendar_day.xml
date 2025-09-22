@@ -9,14 +9,18 @@
     app:cardCornerRadius="4dp"
     app:cardElevation="2dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dayContainer"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/day_default_background"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground">
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dayContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/day_default_background"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
 
         <!-- Day Number -->
         <TextView
@@ -64,6 +68,16 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Bordure pour le jour actuel -->
+        <View
+            android:id="@+id/todayBorder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/today_border"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
 </androidx.cardview.widget.CardView>
