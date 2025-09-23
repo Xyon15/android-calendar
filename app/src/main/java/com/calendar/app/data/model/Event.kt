@@ -10,14 +10,6 @@ import java.util.*
 
 @Entity(
     tableName = "events",
-    foreignKeys = [
-        ForeignKey(
-            entity = EventType::class,
-            parentColumns = ["id"],
-            childColumns = ["eventTypeId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ],
     indices = [
         Index(value = ["eventTypeId"])
     ]
@@ -31,7 +23,7 @@ data class Event(
     val date: Long, // Timestamp en millisecondes
     val startTime: String? = null, // Format HH:mm
     val endTime: String? = null, // Format HH:mm
-    val eventTypeId: Long,
+    val eventTypeId: Long?,
     val workHours: Float = 0.0f,
     val alertType: String = "Aucun", // "Aucun", "15min", "30min", "1h", etc.
     val createdAt: Long = System.currentTimeMillis(),

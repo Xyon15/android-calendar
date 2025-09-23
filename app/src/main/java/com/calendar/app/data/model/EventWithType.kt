@@ -9,5 +9,5 @@ data class EventWithType(
         parentColumn = "eventTypeId",
         entityColumn = "id"
     )
-    val eventType: EventType
+    val eventType: EventType?
 )

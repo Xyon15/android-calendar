@@ -11,7 +11,8 @@ import com.calendar.app.R
 import com.calendar.app.data.model.Event
 
 class AppointmentsAdapter(
-    private val onItemClick: (Event) -> Unit
+    private val onItemClick: (Event) -> Unit,
+    private val onEditClick: (Event) -> Unit
 ) : ListAdapter<Event, AppointmentsAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,9 +29,24 @@ class AppointmentsAdapter(
         private val tvTime: TextView = itemView.findViewById(R.id.tvAppointmentTime)
         private val tvTitle: TextView = itemView.findViewById(R.id.tvAppointmentTitle)
         private val tvDescription: TextView = itemView.findViewById(R.id.tvAppointmentDescription)
+        private val btnEdit: View = itemView.findViewById(R.id.btnMoreOptions)
 
         fun bind(event: Event) {
-            tvTime.text = event.startTime ?: ""
+            // Gérer l'affichage de l'heure
+            if (event.startTime != null && event.startTime.isNotEmpty()) {
+                tvTime.text = event.startTime
+                tvTime.visibility = View.VISIBLE
+                tvTime.parent?.let { parent ->
+                    (parent as View).visibility = View.VISIBLE
+                }
+            } else {
+                tvTime.text = "Toute la journée"
+                tvTime.visibility = View.VISIBLE
+                tvTime.parent?.let { parent ->
+                    (parent as View).visibility = View.VISIBLE
+                }
+            }
+            
             tvTitle.text = event.title
             
             if (event.description.isNotEmpty()) {
@@ -42,6 +58,10 @@ class AppointmentsAdapter(
 
             itemView.setOnClickListener {
                 onItemClick(event)
+            }
+            
+            btnEdit.setOnClickListener {
+                onEditClick(event)
             }
         }
     }

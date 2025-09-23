@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.calendar.app.MainActivity
 import com.calendar.app.R
 import com.calendar.app.data.database.CalendarDatabase
+import com.calendar.app.data.model.Event
 import com.calendar.app.data.repository.CalendarRepository
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.flow.first
@@ -57,6 +58,12 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
         loadData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Recharger les données quand on revient à cette vue
+        loadData()
+    }
+
     private fun initializeViews(view: View) {
         tvSelectedDate = view.findViewById(com.calendar.app.R.id.tvSelectedDate)
         tvDayTypeTitle = view.findViewById(com.calendar.app.R.id.tvDayTypeTitle)
@@ -86,10 +93,16 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupRecyclerView() {
-        appointmentsAdapter = AppointmentsAdapter { appointment ->
-            // Action pour éditer un rendez-vous
-            // TODO: Implémenter l'édition
-        }
+        appointmentsAdapter = AppointmentsAdapter(
+            onItemClick = { appointment ->
+                // Action pour voir les détails d'un rendez-vous
+                // TODO: Implémenter l'affichage des détails
+            },
+            onEditClick = { appointment ->
+                // Action pour éditer un rendez-vous
+                editAppointment(appointment)
+            }
+        )
         
         rvAppointments.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -108,8 +121,8 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
         }
         
         layoutAddAppointment.setOnClickListener {
-            // Naviguer vers le sous-menu des types de rendez-vous
-            navigateToAppointmentTypes()
+            // Naviguer directement vers le formulaire de création de rendez-vous
+            navigateToAddAppointment()
         }
     }
 
@@ -136,6 +149,28 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
         dismiss()
     }
 
+    private fun navigateToAddAppointment() {
+        // Ouvrir le bottom sheet pour créer un rendez-vous
+        val addEventBottomSheet = AddEventBottomSheetFragment.newInstance(args.selectedDate)
+        addEventBottomSheet.show(parentFragmentManager, "AddEventBottomSheet")
+        
+        // Attendre un peu avant de fermer pour éviter les conflits
+        view?.postDelayed({
+            dismiss()
+        }, 100)
+    }
+
+    private fun editAppointment(appointment: Event) {
+        // Ouvrir le bottom sheet d'édition avec les données de l'événement
+        val editEventBottomSheet = AddEventBottomSheetFragment.newInstance(args.selectedDate, appointment)
+        editEventBottomSheet.show(parentFragmentManager, "EditEventBottomSheet")
+        
+        // Attendre un peu avant de fermer pour éviter les conflits
+        view?.postDelayed({
+            dismiss()
+        }, 100)
+    }
+
     private fun navigateToAddEvent(eventType: String) {
         val action = DayMenuBottomSheetFragmentDirections
             .actionDayMenuToAddEvent(args.selectedDate, eventType)
@@ -160,8 +195,9 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
                 
                 if (currentDayTypeEvent != null) {
                     // Il y a déjà un type de journée, afficher son nom dans le titre
-                    tvDayTypeTitle.text = currentDayTypeEvent.eventType.name
-                    Log.d("DayMenuBottomSheet", "Current day type found: ${currentDayTypeEvent.eventType.name}")
+                    val eventTypeName = currentDayTypeEvent.eventType?.name ?: "Type de journée"
+                    tvDayTypeTitle.text = eventTypeName
+                    Log.d("DayMenuBottomSheet", "Current day type found: $eventTypeName")
                 } else {
                     // Pas de type de journée, garder le titre par défaut
                     tvDayTypeTitle.text = "Définir le type de cette journée"
@@ -180,11 +216,25 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
                 // Convertir la date pour chercher les événements
                 val inputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val date = inputFormat.parse(args.selectedDate)
-                val dateTimestamp = date?.time ?: System.currentTimeMillis()
                 
-                // Charger les rendez-vous pour cette date
+                // Normaliser à 00:00:00 pour la comparaison
+                val calendar = Calendar.getInstance()
+                calendar.time = date ?: Date()
+                calendar.set(Calendar.HOUR_OF_DAY, 0)
+                calendar.set(Calendar.MINUTE, 0)
+                calendar.set(Calendar.SECOND, 0)
+                calendar.set(Calendar.MILLISECOND, 0)
+                val dateTimestamp = calendar.timeInMillis
+                
+                // Charger tous les événements pour cette date (rendez-vous = événements sans eventTypeId)
                 val events = repository.getEventsByDate(dateTimestamp).first()
-                val appointments = events.filter { it.startTime != null } // Seulement les rendez-vous avec heure
+                val appointments = events.filter { it.eventTypeId == null } // Les rendez-vous n'ont pas de type
+                
+                Log.d("DayMenuBottomSheet", "Found ${events.size} total events for date $dateTimestamp")
+                Log.d("DayMenuBottomSheet", "Found ${appointments.size} appointments (no eventTypeId)")
+                appointments.forEachIndexed { index, appointment ->
+                    Log.d("DayMenuBottomSheet", "Appointment $index: ${appointment.title} at ${appointment.startTime}")
+                }
                 
                 appointmentsAdapter.submitList(appointments)
             } catch (e: Exception) {

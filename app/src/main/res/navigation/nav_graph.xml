@@ -56,7 +56,7 @@
     <fragment
         android:id="@+id/addEventFragment"
         android:name="com.calendar.app.ui.calendar.AddEventFragment"
-        android:label="✨ Nouvel événement">
+        android:label="Nouvel événement">
         
         <argument
             android:name="selectedDate"

@@ -57,11 +57,14 @@ class CalendarAdapter(
             val context = binding.root.context
             val dayEvents = eventsMap[getDateKey(calendarDay.date)] ?: emptyList()
             
-            // D'abord appliquer la couleur de fond selon les événements ou l'état par défaut
+            // Filtrer seulement les événements de type journée (avec eventType)
+            val dayTypeEvents = dayEvents.filter { it.eventType != null }
+            
+            // D'abord appliquer la couleur de fond selon les événements de type journée seulement
             when {
-                dayEvents.isNotEmpty() -> {
-                    // Use the first event's color as day background
-                    val eventColor = dayEvents.first().eventType.color
+                dayTypeEvents.isNotEmpty() -> {
+                    // Use the first day type event's color as day background
+                    val eventColor = dayTypeEvents.first().eventType?.color ?: "#8E24AA"
                     try {
                         binding.dayContainer.setBackgroundColor(Color.parseColor(eventColor))
                         binding.tvDayNumber.setTextColor(
@@ -75,16 +78,6 @@ class CalendarAdapter(
                         binding.tvDayNumber.setTextColor(
                             ContextCompat.getColor(context, android.R.color.white)
                         )
-                    }
-                    
-                    // Show event time if available (for appointments with time)
-                    val firstEvent = dayEvents.first().event
-                    if (firstEvent.startTime != null) {
-                        binding.tvEventTime.text = "${firstEvent.startTime} - ${firstEvent.title}"
-                        binding.tvEventTime.visibility = android.view.View.VISIBLE
-                    } else {
-                        // For day types (no time), don't show time but keep the color
-                        binding.tvEventTime.visibility = android.view.View.GONE
                     }
                 }
                 calendarDay.isSelected -> {
@@ -124,6 +117,16 @@ class CalendarAdapter(
             } else {
                 // Cacher la bordure pour les autres jours
                 binding.todayBorder.visibility = android.view.View.GONE
+            }
+            
+            // Afficher les informations de rendez-vous (indépendamment de la couleur de fond)
+            val appointments = dayEvents.filter { it.event.startTime != null && it.eventType == null }
+            if (appointments.isNotEmpty()) {
+                val firstAppointment = appointments.first().event
+                binding.tvEventTime.text = "${firstAppointment.startTime} - ${firstAppointment.title}"
+                binding.tvEventTime.visibility = android.view.View.VISIBLE
+            } else {
+                binding.tvEventTime.visibility = android.view.View.GONE
             }
             
             // Supprimer complètement le dayMarker (petit point orange)

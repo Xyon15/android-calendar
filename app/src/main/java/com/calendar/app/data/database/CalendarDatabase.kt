@@ -12,7 +12,7 @@ import com.calendar.app.data.model.EventType
 
 @Database(
     entities = [Event::class, EventType::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

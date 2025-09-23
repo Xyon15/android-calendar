@@ -65,14 +65,26 @@ class MainActivity : AppCompatActivity() {
                 R.id.dayTypesManagementFragment -> {
                     supportActionBar?.title = "Types de journées"
                     binding.toolbar.title = "Types de journées"
+                    showMenuButton()
+                    binding.btnToday.visibility = android.view.View.VISIBLE
                 }
                 R.id.dayTypeFormFragment -> {
                     supportActionBar?.title = "Type de journée"
                     binding.toolbar.title = "Type de journée"
+                    hideMenuButton()
+                    binding.btnToday.visibility = android.view.View.GONE
+                }
+                R.id.addEventFragment -> {
+                    supportActionBar?.title = "Nouvel événement"
+                    binding.toolbar.title = "Nouvel événement"
+                    hideMenuButton()
+                    binding.btnToday.visibility = android.view.View.GONE
                 }
                 else -> {
                     supportActionBar?.title = ""
                     binding.toolbar.title = ""
+                    showMenuButton()
+                    binding.btnToday.visibility = android.view.View.VISIBLE
                 }
             }
         }
