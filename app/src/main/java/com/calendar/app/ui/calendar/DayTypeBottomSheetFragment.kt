@@ -120,6 +120,24 @@ class DayTypeBottomSheetFragment : BottomSheetDialogFragment() {
                 val dayTypes = repository.getAllEventTypes().first()
                 Log.d("DayTypeBottomSheet", "Loaded ${dayTypes.size} day types")
                 
+                // Log tous les EventTypes trouvés
+                dayTypes.forEachIndexed { index, eventType ->
+                    Log.d("DayTypeBottomSheet", "EventType $index: id=${eventType.id}, name='${eventType.name}', description='${eventType.description}'")
+                }
+                
+                // Nettoyer les EventTypes parasites avec le nom "Type de journée"
+                val parasiteEventTypes = dayTypes.filter { it.name == "Type de journée" }
+                if (parasiteEventTypes.isNotEmpty()) {
+                    Log.d("DayTypeBottomSheet", "Found ${parasiteEventTypes.size} parasite EventTypes to remove")
+                    parasiteEventTypes.forEach { parasiteType ->
+                        Log.d("DayTypeBottomSheet", "Removing parasite EventType: ${parasiteType.name} (id=${parasiteType.id})")
+                        repository.deleteEventType(parasiteType)
+                    }
+                    // Recharger après suppression et relancer loadUserDayTypes
+                    loadUserDayTypes()
+                    return@launch
+                }
+                
                 // Créer une liste avec l'option "Aucun" en haut
                 val dayTypesWithNone = mutableListOf<EventType>()
                 
@@ -154,13 +172,9 @@ class DayTypeBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun navigateToAddEvent(dayTypeName: String) {
-        // Navigation simple vers AddEventFragment
-        val navController = findNavController()
-        val bundle = Bundle().apply {
-            putString("selectedDate", selectedDate)
-            putString("eventType", "day_type_$dayTypeName")
-        }
-        navController.navigate(R.id.addEventFragment, bundle)
+        // Cette méthode est obsolète - ne pas naviguer vers l'ancien AddEventFragment
+        // qui créait des EventTypes parasites
+        Log.d("DayTypeBottomSheet", "navigateToAddEvent called but disabled to prevent parasite EventTypes")
         dismiss()
     }
     

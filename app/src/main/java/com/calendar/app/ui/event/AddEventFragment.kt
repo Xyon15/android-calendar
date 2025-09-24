@@ -17,6 +17,8 @@ import com.calendar.app.utils.DateUtils
 import kotlinx.coroutines.launch
 import java.util.*
 
+/*
+// Fragment temporairement désactivé pour compilation
 class AddEventFragment : Fragment() {
     
     private var _binding: FragmentAddEventBinding? = null
@@ -161,3 +163,4 @@ class AddEventFragment : Fragment() {
         _binding = null
     }
 }
+*/

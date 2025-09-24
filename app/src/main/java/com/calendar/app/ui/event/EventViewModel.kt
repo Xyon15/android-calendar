@@ -101,8 +101,10 @@ class EventViewModel(private val repository: CalendarRepository) : ViewModel() {
                     }
                 }
                 
-                // Load event type
-                val eventType = repository.getEventTypeById(it.eventTypeId)
+                // Load event type (seulement si eventTypeId n'est pas null)
+                val eventType = it.eventTypeId?.let { id ->
+                    repository.getEventTypeById(id)
+                }
                 _selectedEventType.value = eventType
             }
         }

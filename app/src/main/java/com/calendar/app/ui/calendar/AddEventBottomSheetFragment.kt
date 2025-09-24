@@ -3,6 +3,7 @@ package com.calendar.app.ui.calendar
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -257,7 +258,11 @@ class AddEventBottomSheetFragment : BottomSheetDialogFragment() {
                         eventTypeId = null // Pas de type pour les rendez-vous simples
                     )
                     
-                    repository.insertEvent(event)
+                    Log.d("AddEventBottomSheet", "Creating event: title='$title', date=${event.date}, eventTypeId=${event.eventTypeId}, startTime=${event.startTime}")
+                    Log.d("AddEventBottomSheet", "Final date calendar: ${finalDate.time}")
+                    Log.d("AddEventBottomSheet", "Final date timestamp: ${finalDate.timeInMillis}")
+                    val insertedId = repository.insertEvent(event)
+                    Log.d("AddEventBottomSheet", "Event created with ID: $insertedId")
                     Toast.makeText(requireContext(), "Rendez-vous créé avec succès", Toast.LENGTH_SHORT).show()
                 }
                 

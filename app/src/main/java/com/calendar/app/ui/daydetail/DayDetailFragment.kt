@@ -19,6 +19,8 @@ import com.calendar.app.utils.DateUtils
 import kotlinx.coroutines.launch
 import java.util.*
 
+/*
+// Fragment temporairement désactivé pour compilation
 class DayDetailFragment : Fragment() {
     
     private var _binding: FragmentDayDetailBinding? = null
@@ -92,3 +94,4 @@ class DayDetailFragment : Fragment() {
         _binding = null
     }
 }
+*/

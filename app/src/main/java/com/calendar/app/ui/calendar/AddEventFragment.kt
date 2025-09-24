@@ -163,22 +163,15 @@ class AddEventFragment : Fragment() {
         
         lifecycleScope.launch {
             try {
-                // Créer un type d'événement "Rendez-vous" s'il n'existe pas
-                val appointmentEventType = getOrCreateAppointmentEventType()
+                // Les rendez-vous n'ont pas besoin d'EventType - ils utilisent eventTypeId = null
                 
-                // Préparer la date finale
+                // Préparer la date finale (toujours normalisée à 00:00:00 pour cohérence)
                 val finalDate = Calendar.getInstance()
                 finalDate.set(Calendar.YEAR, selectedDate.get(Calendar.YEAR))
                 finalDate.set(Calendar.MONTH, selectedDate.get(Calendar.MONTH))
                 finalDate.set(Calendar.DAY_OF_MONTH, selectedDate.get(Calendar.DAY_OF_MONTH))
-                
-                if (hasTime) {
-                    finalDate.set(Calendar.HOUR_OF_DAY, selectedTime.get(Calendar.HOUR_OF_DAY))
-                    finalDate.set(Calendar.MINUTE, selectedTime.get(Calendar.MINUTE))
-                } else {
-                    finalDate.set(Calendar.HOUR_OF_DAY, 0)
-                    finalDate.set(Calendar.MINUTE, 0)
-                }
+                finalDate.set(Calendar.HOUR_OF_DAY, 0)  // Normaliser à 00:00:00
+                finalDate.set(Calendar.MINUTE, 0)
                 finalDate.set(Calendar.SECOND, 0)
                 finalDate.set(Calendar.MILLISECOND, 0)
                 
@@ -187,9 +180,9 @@ class AddEventFragment : Fragment() {
                     title = title,
                     description = if (description.isNotEmpty()) description else "",
                     date = finalDate.timeInMillis,
-                    startTime = if (hasTime) String.format("%02d:%02d", finalDate.get(Calendar.HOUR_OF_DAY), finalDate.get(Calendar.MINUTE)) else null,
+                    startTime = if (hasTime) String.format("%02d:%02d", selectedTime.get(Calendar.HOUR_OF_DAY), selectedTime.get(Calendar.MINUTE)) else null,
                     endTime = null, // Pas de fin pour les rendez-vous simples
-                    eventTypeId = appointmentEventType.id
+                    eventTypeId = null // Les rendez-vous n'ont pas d'EventType
                 )
                 
                 repository.insertEvent(event)
@@ -212,21 +205,6 @@ class AddEventFragment : Fragment() {
         }
     }
 
-    private suspend fun getOrCreateAppointmentEventType(): EventType {
-        // Chercher un type "Rendez-vous" existant
-        val existingTypes = repository.getAllEventTypes().first()
-        val appointmentType = existingTypes.find { it.name == "Rendez-vous" }
-        
-        return appointmentType ?: run {
-            // Créer un nouveau type "Rendez-vous"
-            val newType = EventType(
-                name = "Rendez-vous",
-                color = "#3498DB" // Bleu
-            )
-            val id = repository.insertEventType(newType)
-            newType.copy(id = id)
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -30,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         
         setSupportActionBar(binding.toolbar)
         
+        // Nettoyer les EventTypes parasites au démarrage
+        cleanupParasiteEventTypes()
+        
         // Setup navigation drawer
         setupNavigationDrawer()
         
@@ -143,5 +146,54 @@ class MainActivity : AppCompatActivity() {
     
     fun showMenuButton() {
         binding.btnMenu.visibility = android.view.View.VISIBLE
+    }
+    
+    private fun cleanupParasiteEventTypes() {
+        // Supprimer les EventTypes parasites au démarrage de l'application
+        lifecycleScope.launch {
+            try {
+                val database = CalendarDatabase.getDatabase(this@MainActivity)
+                val repository = CalendarRepository(database.eventDao(), database.eventTypeDao())
+                
+                val allEventTypes = repository.getAllEventTypes().first()
+                val parasiteEventTypes = allEventTypes.filter { eventType ->
+                    eventType.name == "Type de journée" || 
+                    eventType.name == "Rendez-vous" ||
+                    eventType.name.startsWith("appointment_") ||
+                    eventType.name.startsWith("day_type_")
+                }
+                
+                if (parasiteEventTypes.isNotEmpty()) {
+                    Log.d("MainActivity", "Found ${parasiteEventTypes.size} parasite EventTypes to cleanup")
+                    parasiteEventTypes.forEach { parasiteType ->
+                        Log.d("MainActivity", "Checking parasite EventType: '${parasiteType.name}' (id=${parasiteType.id})")
+                        
+                        // Vérifier s'il y a des événements liés à cet EventType
+                        val allEvents = repository.getAllEvents().first()
+                        val linkedEvents = allEvents.filter { it.eventTypeId == parasiteType.id }
+                        
+                        if (linkedEvents.isNotEmpty()) {
+                            Log.d("MainActivity", "EventType '${parasiteType.name}' has ${linkedEvents.size} linked events")
+                            linkedEvents.forEach { event ->
+                                Log.d("MainActivity", "  - Event: '${event.title}' (startTime: ${event.startTime})")
+                                // Corriger l'événement pour avoir eventTypeId = null (rendez-vous)
+                                val correctedEvent = event.copy(eventTypeId = null)
+                                repository.updateEvent(correctedEvent)
+                                Log.d("MainActivity", "  - Corrected event to have eventTypeId = null")
+                            }
+                        }
+                        
+                        // Maintenant supprimer l'EventType parasite
+                        repository.deleteEventType(parasiteType)
+                        Log.d("MainActivity", "Removed parasite EventType: '${parasiteType.name}'")
+                    }
+                    Log.d("MainActivity", "Cleanup completed")
+                } else {
+                    Log.d("MainActivity", "No parasite EventTypes found")
+                }
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error during EventType cleanup", e)
+            }
+        }
     }
 }

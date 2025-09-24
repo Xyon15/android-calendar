@@ -1,6 +1,7 @@
 package com.calendar.app.ui.calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,13 +77,9 @@ class AppointmentTypeBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun navigateToAddEvent(appointmentType: String) {
-        // Navigation simple vers AddEventFragment
-        val navController = findNavController()
-        val bundle = Bundle().apply {
-            putString("selectedDate", selectedDate)
-            putString("eventType", "appointment_$appointmentType")
-        }
-        navController.navigate(R.id.addEventFragment, bundle)
+        // Cette méthode est obsolète - ne pas naviguer vers l'ancien AddEventFragment
+        // qui créait des EventTypes parasites
+        Log.d("AppointmentTypeBottomSheet", "navigateToAddEvent called but disabled to prevent parasite EventTypes")
         dismiss()
     }
 }

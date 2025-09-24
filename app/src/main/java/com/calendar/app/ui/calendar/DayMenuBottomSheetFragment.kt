@@ -172,9 +172,9 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun navigateToAddEvent(eventType: String) {
-        val action = DayMenuBottomSheetFragmentDirections
-            .actionDayMenuToAddEvent(args.selectedDate, eventType)
-        findNavController().navigate(action)
+        // Cette méthode est obsolète - ne pas naviguer vers l'ancien AddEventFragment
+        // qui créait des EventTypes parasites
+        Log.d("DayMenuBottomSheet", "navigateToAddEvent called but disabled to prevent parasite EventTypes")
         dismiss()
     }
 
@@ -188,9 +188,10 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
 
                 val existingEvents = repository.getEventsWithTypeByDate(dateTimestamp).first()
                 
-                // Chercher un événement de type journée (startTime = null)
+                // Chercher un événement de type journée (startTime = null ET eventTypeId != null)
+                // Les rendez-vous sans heure ont eventTypeId = null, donc on les exclut
                 val currentDayTypeEvent = existingEvents.find { 
-                    it.event.startTime == null 
+                    it.event.startTime == null && it.event.eventTypeId != null
                 }
                 
                 if (currentDayTypeEvent != null) {
@@ -217,7 +218,7 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
                 val inputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val date = inputFormat.parse(args.selectedDate)
                 
-                // Normaliser à 00:00:00 pour la comparaison
+                // Normaliser à 00:00:00 pour la comparaison - EXACTEMENT comme dans AddEventBottomSheetFragment
                 val calendar = Calendar.getInstance()
                 calendar.time = date ?: Date()
                 calendar.set(Calendar.HOUR_OF_DAY, 0)
@@ -226,18 +227,25 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
                 calendar.set(Calendar.MILLISECOND, 0)
                 val dateTimestamp = calendar.timeInMillis
                 
+                Log.d("DayMenuBottomSheet", "Searching for date: ${args.selectedDate}")
+                Log.d("DayMenuBottomSheet", "Normalized timestamp: $dateTimestamp")
+                Log.d("DayMenuBottomSheet", "Calendar date: ${calendar.time}")
+                
                 // Charger tous les événements pour cette date (rendez-vous = événements sans eventTypeId)
                 val events = repository.getEventsByDate(dateTimestamp).first()
                 val appointments = events.filter { it.eventTypeId == null } // Les rendez-vous n'ont pas de type
                 
                 Log.d("DayMenuBottomSheet", "Found ${events.size} total events for date $dateTimestamp")
                 Log.d("DayMenuBottomSheet", "Found ${appointments.size} appointments (no eventTypeId)")
-                appointments.forEachIndexed { index, appointment ->
-                    Log.d("DayMenuBottomSheet", "Appointment $index: ${appointment.title} at ${appointment.startTime}")
+                
+                // Debug: Show all events regardless of eventTypeId
+                events.forEachIndexed { index, event ->
+                    Log.d("DayMenuBottomSheet", "Event $index: '${event.title}' eventTypeId=${event.eventTypeId} date=${event.date} startTime=${event.startTime}")
                 }
                 
                 appointmentsAdapter.submitList(appointments)
             } catch (e: Exception) {
+                Log.e("DayMenuBottomSheet", "Error loading data: ${e.message}", e)
                 // En cas d'erreur, afficher une liste vide
                 appointmentsAdapter.submitList(emptyList())
             }
