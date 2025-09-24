@@ -84,6 +84,13 @@ class MainActivity : AppCompatActivity() {
                     hideMenuButton()
                     binding.btnToday.visibility = android.view.View.GONE
                 }
+                R.id.yearMonthPickerFragment -> {
+                    supportActionBar?.show()
+                    supportActionBar?.title = "Sélectionner un mois"
+                    binding.toolbar.title = "Sélectionner un mois"
+                    hideMenuButton()
+                    binding.btnToday.visibility = android.view.View.GONE
+                }
                 else -> {
                     supportActionBar?.show()
                     supportActionBar?.title = ""

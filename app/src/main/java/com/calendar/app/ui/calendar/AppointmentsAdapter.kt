@@ -12,7 +12,8 @@ import com.calendar.app.data.model.Event
 
 class AppointmentsAdapter(
     private val onItemClick: (Event) -> Unit,
-    private val onEditClick: (Event) -> Unit
+    private val onEditClick: (Event) -> Unit,
+    private val onDeleteClick: (Event) -> Unit
 ) : ListAdapter<Event, AppointmentsAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,6 +31,7 @@ class AppointmentsAdapter(
         private val tvTitle: TextView = itemView.findViewById(R.id.tvAppointmentTitle)
         private val tvDescription: TextView = itemView.findViewById(R.id.tvAppointmentDescription)
         private val btnEdit: View = itemView.findViewById(R.id.btnMoreOptions)
+        private val btnDelete: View = itemView.findViewById(R.id.btnDelete)
 
         fun bind(event: Event) {
             // Gérer l'affichage de l'heure
@@ -62,6 +64,10 @@ class AppointmentsAdapter(
             
             btnEdit.setOnClickListener {
                 onEditClick(event)
+            }
+            
+            btnDelete.setOnClickListener {
+                onDeleteClick(event)
             }
         }
     }

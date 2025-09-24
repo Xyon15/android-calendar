@@ -53,6 +53,19 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="AS A" />
 
+        <!-- Delete Button -->
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Supprimer le rendez-vous"
+            android:padding="8dp"
+            android:src="@drawable/ic_delete"
+            app:tint="@color/event_red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <!-- Edit Button -->
         <ImageButton
             android:id="@+id/btnMoreOptions"
@@ -63,7 +76,7 @@
             android:padding="8dp"
             android:src="@drawable/ic_edit"
             app:tint="@color/primary_color"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnDelete"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Event Description (if any) -->

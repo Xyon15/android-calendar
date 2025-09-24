@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -101,6 +102,10 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
             onEditClick = { appointment ->
                 // Action pour éditer un rendez-vous
                 editAppointment(appointment)
+            },
+            onDeleteClick = { appointment ->
+                // Action pour supprimer un rendez-vous
+                deleteAppointment(appointment)
             }
         )
         
@@ -169,6 +174,28 @@ class DayMenuBottomSheetFragment : BottomSheetDialogFragment() {
         view?.postDelayed({
             dismiss()
         }, 100)
+    }
+
+    private fun deleteAppointment(appointment: Event) {
+        // Afficher une boîte de dialogue de confirmation
+        androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle("Supprimer le rendez-vous")
+            .setMessage("Voulez-vous vraiment supprimer \"${appointment.title}\" ?")
+            .setPositiveButton("Supprimer") { _, _ ->
+                // Supprimer le rendez-vous de la base de données
+                lifecycleScope.launch {
+                    try {
+                        repository.deleteEvent(appointment)
+                        Toast.makeText(requireContext(), "Rendez-vous supprimé", Toast.LENGTH_SHORT).show()
+                        // Recharger la liste des rendez-vous
+                        loadData()
+                    } catch (e: Exception) {
+                        Toast.makeText(requireContext(), "Erreur lors de la suppression", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            .setNegativeButton("Annuler", null)
+            .show()
     }
 
     private fun navigateToAddEvent(eventType: String) {

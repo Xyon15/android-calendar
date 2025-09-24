@@ -59,11 +59,7 @@ class YearMonthPickerFragment : Fragment() {
         }
     }
 
-    private fun setupClickListeners() {
-        binding.btnBack.setOnClickListener {
-            findNavController().navigateUp()
-        }
-        
+    private fun setupClickListeners() {        
         binding.btnPreviousYear.setOnClickListener {
             currentYear--
             updateYearDisplay()
