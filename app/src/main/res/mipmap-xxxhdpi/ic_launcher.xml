@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    
+    <!-- Circular background -->
+    <path android:fillColor="#FF5722"
+        android:pathData="M24,4A20,20 0 0,1 44,24A20,20 0 0,1 24,44A20,20 0 0,1 4,24A20,20 0 0,1 24,4z"/>
+    
+    <!-- White rectangle calendar - better proportioned -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M12,17h24c1,0 1.8,0.8 1.8,1.8v10.4c0,1 -0.8,1.8 -1.8,1.8H12c-1,0 -1.8,-0.8 -1.8,-1.8V18.8c0,-1 0.8,-1.8 1.8,-1.8z"/>
+    
+    <!-- Dots grid pattern proportioned for smaller rectangle -->
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M14,20h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M17,20h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M20,20h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M23,20h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M26,20h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M29,20h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M32,20h0.8v0.8h-0.8z"/>
+    
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M14,23h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M17,23h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M20,23h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M23,23h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M26,23h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M29,23h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M32,23h0.8v0.8h-0.8z"/>
+    
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M14,26h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M17,26h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M20,26h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M23,26h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M26,26h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M29,26h0.8v0.8h-0.8z"/>
+    <path android:fillColor="#BDBDBD"
+        android:pathData="M32,26h0.8v0.8h-0.8z"/>
+    
+    <!-- Orange dot in bottom left -->
+    <path android:fillColor="#FF5722"
+        android:pathData="M13,28A1.5,1.5 0 0,1 14.5,26.5A1.5,1.5 0 0,1 16,28A1.5,1.5 0 0,1 14.5,29.5A1.5,1.5 0 0,1 13,28z"/>
+    
+</vector>
