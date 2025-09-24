@@ -66,24 +66,26 @@ class MainActivity : AppCompatActivity() {
         navHostFragment?.navController?.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.dayTypesManagementFragment -> {
+                    supportActionBar?.show()
                     supportActionBar?.title = "Types de journées"
                     binding.toolbar.title = "Types de journées"
                     showMenuButton()
                     binding.btnToday.visibility = android.view.View.VISIBLE
                 }
                 R.id.dayTypeFormFragment -> {
-                    supportActionBar?.title = "Type de journée"
-                    binding.toolbar.title = "Type de journée"
+                    supportActionBar?.hide()
                     hideMenuButton()
                     binding.btnToday.visibility = android.view.View.GONE
                 }
                 R.id.addEventFragment -> {
+                    supportActionBar?.show()
                     supportActionBar?.title = "Nouvel événement"
                     binding.toolbar.title = "Nouvel événement"
                     hideMenuButton()
                     binding.btnToday.visibility = android.view.View.GONE
                 }
                 else -> {
+                    supportActionBar?.show()
                     supportActionBar?.title = ""
                     binding.toolbar.title = ""
                     showMenuButton()

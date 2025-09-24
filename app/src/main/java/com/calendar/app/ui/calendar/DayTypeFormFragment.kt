@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.calendar.app.MainActivity
 import com.calendar.app.R
 import com.calendar.app.data.database.CalendarDatabase
 import com.calendar.app.data.model.EventType
@@ -201,5 +202,11 @@ class DayTypeFormFragment : Fragment() {
                 // Gérer l'erreur
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Restaurer l'ActionBar quand on quitte ce fragment
+        (activity as? MainActivity)?.supportActionBar?.show()
     }
 }
