@@ -36,6 +36,24 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="15" />
 
+        <!-- Appointment Count Badge - Bottom Left -->
+        <TextView
+            android:id="@+id/tvAppointmentCount"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/appointment_count_badge"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="3"
+            tools:visibility="visible" />
+
         <!-- Event Indicator -->
         <TextView
             android:id="@+id/tvEventTime"

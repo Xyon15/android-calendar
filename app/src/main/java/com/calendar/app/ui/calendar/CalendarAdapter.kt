@@ -119,15 +119,29 @@ class CalendarAdapter(
                 binding.todayBorder.visibility = android.view.View.GONE
             }
             
-            // Afficher les informations de rendez-vous (indépendamment de la couleur de fond)
-            val appointments = dayEvents.filter { it.event.startTime != null && it.eventType == null }
-            if (appointments.isNotEmpty()) {
-                val firstAppointment = appointments.first().event
-                binding.tvEventTime.text = "${firstAppointment.startTime} - ${firstAppointment.title}"
-                binding.tvEventTime.visibility = android.view.View.VISIBLE
-            } else {
-                binding.tvEventTime.visibility = android.view.View.GONE
+            // Compter TOUS les rendez-vous (avec et sans heure)
+            val appointments = dayEvents.filter { it.eventType == null }
+            val appointmentCount = appointments.size
+            
+            when {
+                appointmentCount > 0 && appointmentCount <= 3 -> {
+                    // Afficher le nombre de rendez-vous dans le badge
+                    binding.tvAppointmentCount.text = appointmentCount.toString()
+                    binding.tvAppointmentCount.visibility = android.view.View.VISIBLE
+                }
+                appointmentCount > 3 -> {
+                    // Afficher "3+" pour plus de 3 rendez-vous
+                    binding.tvAppointmentCount.text = "3+"
+                    binding.tvAppointmentCount.visibility = android.view.View.VISIBLE
+                }
+                else -> {
+                    // Pas de rendez-vous avec heure
+                    binding.tvAppointmentCount.visibility = android.view.View.GONE
+                }
             }
+            
+            // Supprimer complètement l'ancien affichage de l'heure
+            binding.tvEventTime.visibility = android.view.View.GONE
             
             // Supprimer complètement le dayMarker (petit point orange)
             binding.dayMarker.visibility = android.view.View.GONE
