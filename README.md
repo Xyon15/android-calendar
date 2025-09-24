@@ -1,49 +1,36 @@
-# Mon Planning - Calendrier Android 
+# Mon Planning - Calendrier Android 📅
 
-## 🚀 COMMANDES DE COMPILATION
+Une application de calendrier Android moderne et intuitive avec un **système de rendez-vous simplifié** utilisant des bottom sheets. L'application permet de gérer facilement votre planning avec des rendez-vous rapides et des types de journées personnalisables.
 
-```bash
-# Configuration Java (à faire à chaque session)
-set JAVA_HOME=C:\Program Files\Android\Android Studio\jbr
-
-# Nettoyage et compilation
-.\gradlew.bat clean assembleDebug
-
-# Version rapide
-.\gradlew.bat build
-```
-
-## 📁 SCRIPTS DISPONIBLES
-- **`clean-gradle.bat`** → Nettoyage automatique complet
-- **`gradlew.bat`** → Gradle Wrapper Windows
-
----
-
-Une application de calendrier Android moderne et intuitive. Cette application permet de gérer facilement votre planning avec un système de couleurs personnalisées pour différents types d'événements.
-
-## 🌟 Fonctionnalités
+## ✨ Fonctionnalités
 
 ### 📅 Affichage Calendrier
 - **Vue mensuelle** avec grille 7x6 jours
 - **Navigation intuitive** entre les mois avec boutons fléchés
-- **Indicateurs visuels** pour les jours avec événements
-- **Couleurs personnalisées** selon le type d'événement
+- **Affichage séparé** : rendez-vous (sans couleur) vs types de journées (avec couleur)
+- **Clic sur date** → Bottom sheet avec liste des rendez-vous
 - **Affichage français** (noms des jours et mois en français)
 
-### 🎯 Gestion des Événements
-- **Ajout/modification** d'événements avec formulaire complet
-- **Types d'événements personnalisables** :
-  - Travail (violet)
-  - Réunion (bleu)
-  - Personnel (vert)
-  - Et plus selon vos besoins...
+### 🎯 Gestion des Rendez-vous 
+- **Bottom Sheet de création** rapide et intuitive
+- **Rendez-vous simples** avec `eventTypeId = null`
+- **Support heure optionnelle** (switch activable)
+- **Édition en place** depuis la liste des rendez-vous
+- **Pas de couleurs** sur le calendrier (distinction claire avec types de journées)
 
-### ⏰ Fonctionnalités Avancées
-- **Sélection d'heure** avec NumberPicker intuitif
-- **Calcul des heures travaillées** par événement
-- **Système d'alertes** (15min, 30min, 1h)
-- **Vue détail par jour** avec liste des rendez-vous
-- **Heures supplémentaires/récupération** trackées
+### 📋 Types de Journées 
+- **Types personnalisables** avec couleurs :
+  - Travail, Congé, Formation, etc.
+- **Application à une journée complète**
+- **Couleurs visibles** sur le calendrier
+- **Gestion via bottom sheets** dédiés
+
+### ⏰ Fonctionnalités Techniques
+- **Sélection d'heure** avec TimePickerDialog
+- **Base de données Room** v2 avec migrations automatiques
+- **Nettoyage automatique** des données parasites
+- **Logging complet** pour debugging
+- **Gestion timezone** corrigée
 
 ### 🎨 Interface Utilisateur
 - **Design Material** moderne et épuré
@@ -69,9 +56,13 @@ Une application de calendrier Android moderne et intuitive. Cette application pe
 
 ### 🗄️ Base de Données
 - **Room Database** pour la persistance locale
-- **Entités** : Event, EventType avec relations
+- **Entités améliorées** :
+  - `Event` avec `eventTypeId` nullable (pour les rendez-vous)
+  - `EventType` pour les types de journées
+  - `EventWithType` relation avec `eventType` nullable
 - **DAOs** : EventDao, EventTypeDao pour l'accès aux données
-- **Migrations** automatiques et type converters
+- **Migration v1→v2** : Support des rendez-vous sans type
+- **Cleanup automatique** des EventTypes parasites
 
 ## 📂 Structure du Projet
 
@@ -79,16 +70,28 @@ Une application de calendrier Android moderne et intuitive. Cette application pe
 app/src/main/java/com/calendar/app/
 ├── data/
 │   ├── dao/                # Data Access Objects
-│   ├── database/           # Configuration Room
-│   ├── model/              # Entités de données
-│   └── repository/         # Repository pattern
+│   ├── database/           # Configuration Room v2
+│   ├── model/              # Entités Event, EventType, EventWithType
+│   └── repository/         # Repository pattern avec cleanup
 ├── ui/
-│   ├── calendar/           # Fragment calendrier principal
-│   ├── event/              # Gestion des événements
+│   ├── calendar/           # Fragments principaux
+│   │   ├── CalendarFragment.kt           # Vue calendrier
+│   │   ├── AddEventBottomSheetFragment.kt  # Bottom sheet rendez-vous ⭐
+│   │   ├── DayMenuBottomSheetFragment.kt   # Menu jour avec liste ⭐
+│   │   ├── DayTypeBottomSheetFragment.kt   # Types de journées
+│   │   └── CalendarAdapter.kt            # Adapter avec séparation couleurs ⭐
+│   ├── event/              # Gestion legacy
 │   └── daydetail/          # Détail d'une journée
 ├── utils/                  # Utilitaires (dates, couleurs)
-└── MainActivity.kt         # Activité principale
+└── MainActivity.kt         # Activité avec cleanup automatique ⭐
 ```
+
+### 🔄 **Fichiers Clés Modifiés**
+- **`AddEventBottomSheetFragment`** → Interface de création rendez-vous
+- **`DayMenuBottomSheetFragment`** → Affichage liste + distinction types
+- **`CalendarAdapter`** → Séparation rendez-vous/types de journées  
+- **`MainActivity`** → Nettoyage automatique au démarrage
+- **`CalendarDatabase`** → Migration v2 pour support `eventTypeId` nullable
 
 ## 🚀 Installation et Configuration
 
@@ -112,23 +115,59 @@ cd android-calendar
 
 ## 🎮 Utilisation
 
-1. **Navigation mensuelle** : Utilisez les flèches pour naviguer entre les mois
-2. **Ajouter un événement** : Cliquez sur une date puis sur le bouton "+"
-3. **Modifier un événement** : Cliquez sur une date avec événement puis modifiez
-4. **Types d'événements** : Sélectionnez ou créez des types avec couleurs personnalisées
-5. **Vue détail** : Consultez tous les événements d'une journée spécifique
+### 📅 **Navigation Calendrier**
+1. **Navigation mensuelle** : Flèches pour changer de mois
+2. **Clic sur date** → Ouverture automatique du bottom sheet jour
 
-## 🔧 Personnalisation
+### 📝 **Créer un Rendez-vous**
+1. **Clic sur date** → Bottom sheet s'ouvre
+2. **Bouton "Nouveau rendez-vous"** → Formulaire de création
+3. **Remplir titre** (obligatoire)
+4. **Activer/désactiver l'heure** avec le switch
+5. **Sauvegarder** → Rendez-vous créé avec `eventTypeId = null`
 
-### Ajouter de Nouveaux Types d'Événements
-Les types d'événements sont stockés dans la base de données Room et peuvent être :
-- Ajoutés via l'interface utilisateur
-- Personnalisés avec des couleurs spécifiques
-- Modifiés ou supprimés selon les besoins
+### ✏️ **Modifier un Rendez-vous**
+1. **Clic sur date** → Liste des rendez-vous apparaît
+2. **Clic sur rendez-vous** → Ouverture en mode édition
+3. **Modifier** titre, description, heure
+4. **Sauvegarder** les modifications
 
-### Modification des Couleurs
-Les couleurs sont définies dans `colors.xml` et peuvent être personnalisées :
+### 🎨 **Gérer les Types de Journées**
+1. **Section "Type de Journée"** dans le bottom sheet
+2. **Sélectionner type** → Application à toute la journée
+3. **Couleur visible** sur le calendrier (contrairement aux rendez-vous)
+
+### 🔍 **Distinction Visuelle**
+- **Rendez-vous** : Pas de couleur sur calendrier, visibles dans la liste
+- **Types de journée** : Couleur de fond sur calendrier
+
+## 🔧 Personnalisation et Debugging
+
+### 🎨 Types de Journées Personnalisés
+- **Ajout via interface** : Bottom sheet → Menu → Nouveau type
+- **Couleurs spécifiques** pour chaque type
+- **Stockage en base** Room avec gestion complète
+
+### 🐛 **Système de Debugging Intégré**
+- **Logs complets** avec tags spécifiques :
+  - `AddEventBottomSheet` : Création/édition rendez-vous
+  - `DayMenuBottomSheet` : Chargement et affichage
+  - `MainActivity` : Cleanup et nettoyage
+  - `CalendarAdapter` : Binding et couleurs
+- **Timestamps détaillés** pour debugging timezone
+- **Informations EventType** pour traçage parasites
+
+### 🧹 **Nettoyage Automatique**
+```kotlin
+// Dans MainActivity.cleanupParasiteEventTypes()
+// Supprime automatiquement les EventTypes "Type de journée" parasites
+// Corrige les eventTypeId incorrects avant suppression
+// Préserve les rendez-vous en les convertissant à eventTypeId = null
+```
+
+### 🔧 **Configuration Avancée**
 ```xml
+<!-- colors.xml -->
 <color name="event_purple">#8E44AD</color>
 <color name="event_blue">#3498DB</color>
 <!-- Ajoutez vos couleurs personnalisées -->
@@ -138,16 +177,44 @@ Les couleurs sont définies dans `colors.xml` et peuvent être personnalisées :
 
 Ce projet est développé à des fins éducatives et personnelles.
 
-## 🤝 Contribution
+## 🛠️ **Maintenance et Support**
+
+### 🐛 **Résolution de Problèmes**
+Si vous rencontrez des issues :
+
+1. **Vérifiez les logs** avec les tags spécifiques
+2. **Nettoyage manuel** si nécessaire :
+   ```kotlin
+   // Le cleanup automatique se lance au démarrage
+   // Mais peut être forcé via MainActivity.cleanupParasiteEventTypes()
+   ```
+3. **Reset base données** en cas de corruption :
+   ```bash
+   # Supprimer les données app dans Android Settings
+   # Ou incrémenter DATABASE_VERSION dans CalendarDatabase
+   ```
+
+### 🤝 **Contribution**
 
 Les contributions sont les bienvenues ! N'hésitez pas à :
-- Signaler des bugs
-- Proposer de nouvelles fonctionnalités
-- Améliorer la documentation
-- Optimiser les performances
+- **Signaler des bugs** avec logs détaillés
+- **Proposer fonctionnalités** avec cas d'usage
+- **Améliorer documentation** et exemples
+- **Optimiser performances** avec profiling
 
-## 🔄 Mises à Jour Futures
+### 📊 **Métriques Projet**
+- **Stabilité** : ✅ Système rendez-vous fonctionnel
+- **Performance** : ✅ Bottom sheets fluides  
+- **UX** : ✅ Interface intuitive et cohérente
+- **Maintenance** : ✅ Logs complets et cleanup automatique
 
-- [ ] Export/Import de planning
-- [ ] Notifications push
-- [ ] Mode sombre
+## 🔄 **Roadmap Futur**
+
+### 🎯 **Améliorations Immédiates**
+- [ ] Mode sombre/clair
+- [ ] Notifications pour rendez-vous
+- [ ] Export/Import données
+
+### 🚀 **Fonctionnalités Avancées**
+- [ ] Recherche et filtres
+- [ ] Partage de planning
