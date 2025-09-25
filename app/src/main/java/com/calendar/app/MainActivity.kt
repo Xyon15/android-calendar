@@ -33,9 +33,6 @@ class MainActivity : AppCompatActivity() {
         // Nettoyer les EventTypes parasites au démarrage
         cleanupParasiteEventTypes()
         
-        // Créer des données de test pour octobre 2025
-        com.calendar.app.testing.TestDataGenerator.createTestEvents(this)
-        
         // Setup navigation drawer
         setupNavigationDrawer()
         

@@ -22,10 +22,6 @@ class CalendarAdapter(
     fun updateEvents(events: List<EventWithType>) {
         Log.d("CalendarAdapter", "updateEvents called with ${events.size} events")
         eventsMap = events.groupBy { getDateKey(it.event.date) }
-        // Log détaillé des événements pour déboguer
-        events.forEach { event ->
-            Log.d("CalendarAdapter", "Event: ${event.event.title} on ${java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault()).format(java.util.Date(event.event.date))}")
-        }
         notifyDataSetChanged()
     }
     
@@ -60,11 +56,6 @@ class CalendarAdapter(
             // Set day background and text color
             val context = binding.root.context
             val dayEvents = eventsMap[getDateKey(calendarDay.date)] ?: emptyList()
-            
-            // Log pour déboguer
-            if (dayEvents.isNotEmpty()) {
-                Log.d("CalendarAdapter", "Day ${calendarDay.dayOfMonth} (${if(calendarDay.isCurrentMonth) "current" else "adjacent"} month) has ${dayEvents.size} events")
-            }
             
             // Filtrer seulement les événements de type journée (avec eventType)
             val dayTypeEvents = dayEvents.filter { it.eventType != null }

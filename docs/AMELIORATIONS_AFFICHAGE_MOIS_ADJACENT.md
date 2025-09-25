@@ -61,12 +61,7 @@ Nouvelles méthodes ajoutées :
    )
    ```
 
-### 3. Ajout de données de test
 
-Création de `TestDataGenerator.kt` pour générer automatiquement :
-- Type de journée "Test Violet" (#8E44AD)
-- Événements du 4 et 5 octobre 2025 avec ce type
-- Rendez-vous sur ces mêmes dates
 
 ## 🎯 Résultat
 
@@ -77,18 +72,16 @@ Création de `TestDataGenerator.kt` pour générer automatiquement :
 
 ## 📱 Test
 
-1. **Ouvrez l'application** - Des données de test sont automatiquement créées
+1. **Créez des événements** pour tester la fonctionnalité :
+   - Naviguez vers octobre 2025
+   - Créez un type de journée (ex: "Test", couleur violette)
+   - Ajoutez un événement le 4 octobre
+   - Ajoutez un rendez-vous le 5 octobre
 2. **Naviguez vers septembre 2025** dans le calendrier
 3. **Vérifiez les jours 4 et 5 octobre** (mois suivant) qui affichent maintenant :
-   - ✅ Couleur violette de type de journée (grisée à 30% d'opacité)
-   - ✅ Badge "1" de rendez-vous (semi-transparent à 50%)
+   - ✅ Couleur de type de journée (grisée à 30% d'opacité)
+   - ✅ Badge de rendez-vous (semi-transparent à 50%)
 4. **Comparez avec les événements de septembre** (opacité complète)
-5. **Vérifiez les logs** dans Android Studio/Logcat pour voir :
-   ```
-   CalendarAdapter: updateEvents called with X events
-   CalendarAdapter: Event: Journée Test on 04/10/2025
-   CalendarAdapter: Event: RDV Test on 04/10/2025
-   ```
 
 ## 🔧 Configuration Technique
 

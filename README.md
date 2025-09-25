@@ -106,7 +106,7 @@ app/src/main/java/com/calendar/app/
 - **`MultiDaySelectionFragment`** → Interface de sélection multiple moderne ⭐
 - **`MultiSelectWeekCalendarAdapter`** → Calendrier par semaines avec sélection
 - **`DayTypeSelectionAdapter`** → Liste des types avec design moderne
-- **`MainActivity`** → Nettoyage automatique et gestion bouton multi-sélection + Données de test ⭐
+- **`MainActivity`** → Nettoyage automatique et gestion bouton multi-sélection ⭐
 - **`CalendarDatabase`** → Migration v2 pour support `eventTypeId` nullable
 
 ## 🚀 Installation et Configuration
@@ -189,7 +189,6 @@ cd android-calendar
   - `MainActivity` : Cleanup et nettoyage
   - `CalendarAdapter` : Binding et couleurs + Événements mois adjacents ⭐
   - `CalendarViewModel` : Récupération plage étendue d'événements ⭐
-  - `TestDataGenerator` : Création automatique de données de test ⭐
 - **Timestamps détaillés** pour debugging timezone
 - **Informations EventType** pour traçage parasites
 
@@ -271,7 +270,6 @@ Les contributions sont les bienvenues ! N'hésitez pas à :
 - [x] **Boutons avec design moderne** (coins arrondis, états visuels)
 - [x] **Affichage événements mois adjacents** avec effet grisé pour distinction visuelle ⭐
 - [x] **Récupération étendue événements** sur plage complète de 6 semaines ⭐
-- [x] **Système de test automatisé** avec génération de données pour validation ⭐
 
 ## 🔄 **Roadmap Futur**
 
