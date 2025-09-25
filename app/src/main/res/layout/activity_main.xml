@@ -46,6 +46,19 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/btnMultiSelect"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/multi_select_button_background"
+                android:padding="8dp"
+                android:src="@drawable/ic_multi_select"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone"
+                android:contentDescription="Sélection multiple" />
+
             <TextView
                 android:id="@+id/btnToday"
                 android:layout_width="40dp"

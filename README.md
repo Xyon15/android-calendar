@@ -24,6 +24,7 @@ Une application de calendrier Android moderne et intuitive avec un **système de
 - **Application à une journée complète**
 - **Couleurs visibles** sur le calendrier
 - **Gestion via bottom sheets** dédiés
+- **Sélection multiple** : Bouton carré dans la toolbar pour sélectionner plusieurs jours ⭐
 
 ### ⏰ Fonctionnalités Techniques
 - **Sélection d'heure** avec TimePickerDialog
@@ -136,6 +137,13 @@ cd android-calendar
 1. **Section "Type de Journée"** dans le bottom sheet
 2. **Sélectionner type** → Application à toute la journée
 3. **Couleur visible** sur le calendrier (contrairement aux rendez-vous)
+
+### 🔘 **Sélection Multiple de Jours** ⭐
+1. **Bouton carré** au centre de la barre bleue → Ouvre la sélection multiple
+2. **Cliquer sur les jours** à modifier dans le calendrier
+3. **Valider la sélection** → Interface des types de journées apparaît
+4. **Choisir le type** dans la liste avec couleurs
+5. **Appliquer** → Le type est affecté à tous les jours sélectionnés
 
 ### 🔍 **Distinction Visuelle**
 - **Rendez-vous** : Pas de couleur sur calendrier, visibles dans la liste

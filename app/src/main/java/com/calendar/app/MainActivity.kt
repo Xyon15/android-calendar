@@ -54,6 +54,9 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.open()
         }
         
+        // Setup multi-select button
+        setupMultiSelectButton()
+        
         // Setup today button
         setupTodayButton()
     }
@@ -70,11 +73,13 @@ class MainActivity : AppCompatActivity() {
                     supportActionBar?.title = "Types de journées"
                     binding.toolbar.title = "Types de journées"
                     showMenuButton()
+                    hideMultiSelectButton()
                     binding.btnToday.visibility = android.view.View.VISIBLE
                 }
                 R.id.dayTypeFormFragment -> {
                     supportActionBar?.hide()
                     hideMenuButton()
+                    hideMultiSelectButton()
                     binding.btnToday.visibility = android.view.View.GONE
                 }
                 R.id.addEventFragment -> {
@@ -82,6 +87,7 @@ class MainActivity : AppCompatActivity() {
                     supportActionBar?.title = "Nouvel événement"
                     binding.toolbar.title = "Nouvel événement"
                     hideMenuButton()
+                    hideMultiSelectButton()
                     binding.btnToday.visibility = android.view.View.GONE
                 }
                 R.id.yearMonthPickerFragment -> {
@@ -89,6 +95,15 @@ class MainActivity : AppCompatActivity() {
                     supportActionBar?.title = "Sélectionner un mois"
                     binding.toolbar.title = "Sélectionner un mois"
                     hideMenuButton()
+                    hideMultiSelectButton()
+                    binding.btnToday.visibility = android.view.View.GONE
+                }
+                R.id.multiDaySelectionFragment -> {
+                    supportActionBar?.show()
+                    supportActionBar?.title = "Sélection multiple"
+                    binding.toolbar.title = "Sélection multiple"
+                    hideMenuButton()
+                    hideMultiSelectButton()
                     binding.btnToday.visibility = android.view.View.GONE
                 }
                 else -> {
@@ -96,6 +111,7 @@ class MainActivity : AppCompatActivity() {
                     supportActionBar?.title = ""
                     binding.toolbar.title = ""
                     showMenuButton()
+                    showMultiSelectButton()
                     binding.btnToday.visibility = android.view.View.VISIBLE
                 }
             }
@@ -134,6 +150,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
     
+    private fun setupMultiSelectButton() {
+        // Action pour ouvrir la sélection multiple
+        binding.btnMultiSelect.setOnClickListener {
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
+            val currentFragment = navHostFragment?.childFragmentManager?.fragments?.firstOrNull()
+            
+            if (currentFragment is com.calendar.app.ui.calendar.CalendarFragment) {
+                // Récupérer le mois actuellement affiché
+                val currentCalendar = currentFragment.getCurrentDisplayedMonth()
+                val year = currentCalendar.get(java.util.Calendar.YEAR)
+                val month = currentCalendar.get(java.util.Calendar.MONTH) + 1 // Ajuster pour 1-12
+                
+                // Créer un bundle avec les arguments
+                val bundle = Bundle().apply {
+                    putInt("displayYear", year)
+                    putInt("displayMonth", month)
+                }
+                
+                // Naviguer vers la sélection multiple avec les paramètres du mois
+                navHostFragment.navController.navigate(R.id.action_calendar_to_multi_day_selection, bundle)
+            } else {
+                // Fallback - utiliser le mois actuel
+                navHostFragment?.navController?.navigate(R.id.action_calendar_to_multi_day_selection)
+            }
+        }
+    }
+    
     private fun navigateToToday() {
         // Obtenir une référence au CalendarFragment et naviguer vers aujourd'hui
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
@@ -155,6 +198,15 @@ class MainActivity : AppCompatActivity() {
     
     fun showMenuButton() {
         binding.btnMenu.visibility = android.view.View.VISIBLE
+    }
+    
+    // Méthodes pour contrôler la visibilité du bouton multi-sélection
+    fun hideMultiSelectButton() {
+        binding.btnMultiSelect.visibility = android.view.View.GONE
+    }
+    
+    fun showMultiSelectButton() {
+        binding.btnMultiSelect.visibility = android.view.View.VISIBLE
     }
     
     private fun cleanupParasiteEventTypes() {

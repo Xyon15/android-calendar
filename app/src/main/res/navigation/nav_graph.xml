@@ -23,6 +23,10 @@
             android:id="@+id/action_calendar_to_year_month_picker"
             app:destination="@id/yearMonthPickerFragment" />
             
+        <action
+            android:id="@+id/action_calendar_to_multi_day_selection"
+            app:destination="@id/multiDaySelectionFragment" />
+            
     </fragment>
 
     <fragment
@@ -125,5 +129,23 @@
             app:destination="@id/addEventFragment" />
             
     </dialog>
+
+    <fragment
+        android:id="@+id/multiDaySelectionFragment"
+        android:name="com.calendar.app.ui.calendar.MultiDaySelectionFragment"
+        android:label="Sélection multiple"
+        tools:layout="@layout/fragment_multi_day_selection">
+        
+        <argument
+            android:name="displayYear"
+            app:argType="integer"
+            android:defaultValue="0" />
+            
+        <argument
+            android:name="displayMonth"
+            app:argType="integer"
+            android:defaultValue="0" />
+            
+    </fragment>
 
 </navigation>

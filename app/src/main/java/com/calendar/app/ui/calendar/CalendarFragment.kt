@@ -179,4 +179,9 @@ class CalendarFragment : Fragment() {
             Toast.LENGTH_SHORT
         ).show()
     }
+    
+    fun getCurrentDisplayedMonth(): Calendar {
+        // Retourner le mois actuellement affiché dans le ViewModel
+        return viewModel.currentMonth.value
+    }
 }
