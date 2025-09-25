@@ -21,9 +21,9 @@ class CalendarViewModel(private val repository: CalendarRepository) : ViewModel(
     
     val eventsForCurrentMonth: StateFlow<List<EventWithType>> = currentMonth
         .flatMapLatest { calendar ->
-            val startOfMonth = getStartOfMonth(calendar)
-            val endOfMonth = getEndOfMonth(calendar)
-            repository.getEventsWithTypeByDateRange(startOfMonth, endOfMonth)
+            val startOfDisplayedRange = getStartOfDisplayedRange(calendar)
+            val endOfDisplayedRange = getEndOfDisplayedRange(calendar)
+            repository.getEventsWithTypeByDateRange(startOfDisplayedRange, endOfDisplayedRange)
         }
         .stateIn(
             scope = viewModelScope,
@@ -142,6 +142,49 @@ class CalendarViewModel(private val repository: CalendarRepository) : ViewModel(
         endOfMonth.set(Calendar.SECOND, 59)
         endOfMonth.set(Calendar.MILLISECOND, 999)
         return endOfMonth.timeInMillis
+    }
+    
+    // Méthodes pour obtenir la plage complète affichée (6 semaines incluant les jours des mois adjacents)
+    private fun getStartOfDisplayedRange(calendar: Calendar): Long {
+        // Get first day of month
+        val firstDayOfMonth = calendar.clone() as Calendar
+        firstDayOfMonth.set(Calendar.DAY_OF_MONTH, 1)
+        
+        // Get first Monday to display (including previous month days)
+        val firstMondayToShow = firstDayOfMonth.clone() as Calendar
+        val dayOfWeek = firstDayOfMonth.get(Calendar.DAY_OF_WEEK)
+        val daysToSubtract = if (dayOfWeek == Calendar.SUNDAY) 6 else dayOfWeek - Calendar.MONDAY
+        firstMondayToShow.add(Calendar.DAY_OF_MONTH, -daysToSubtract)
+        
+        // Set to start of day
+        firstMondayToShow.set(Calendar.HOUR_OF_DAY, 0)
+        firstMondayToShow.set(Calendar.MINUTE, 0)
+        firstMondayToShow.set(Calendar.SECOND, 0)
+        firstMondayToShow.set(Calendar.MILLISECOND, 0)
+        
+        return firstMondayToShow.timeInMillis
+    }
+    
+    private fun getEndOfDisplayedRange(calendar: Calendar): Long {
+        // Get first day of month
+        val firstDayOfMonth = calendar.clone() as Calendar
+        firstDayOfMonth.set(Calendar.DAY_OF_MONTH, 1)
+        
+        // Get first Monday to display (including previous month days)
+        val firstMondayToShow = firstDayOfMonth.clone() as Calendar
+        val dayOfWeek = firstDayOfMonth.get(Calendar.DAY_OF_WEEK)
+        val daysToSubtract = if (dayOfWeek == Calendar.SUNDAY) 6 else dayOfWeek - Calendar.MONDAY
+        firstMondayToShow.add(Calendar.DAY_OF_MONTH, -daysToSubtract)
+        
+        // Add 42 days (6 weeks) and set to end of day
+        val lastDayToShow = firstMondayToShow.clone() as Calendar
+        lastDayToShow.add(Calendar.DAY_OF_MONTH, 41) // 42 days total, so add 41 to get to the last day
+        lastDayToShow.set(Calendar.HOUR_OF_DAY, 23)
+        lastDayToShow.set(Calendar.MINUTE, 59)
+        lastDayToShow.set(Calendar.SECOND, 59)
+        lastDayToShow.set(Calendar.MILLISECOND, 999)
+        
+        return lastDayToShow.timeInMillis
     }
     
     private fun isSameDay(cal1: Calendar, cal2: Calendar): Boolean {

@@ -22,6 +22,10 @@ class CalendarAdapter(
     fun updateEvents(events: List<EventWithType>) {
         Log.d("CalendarAdapter", "updateEvents called with ${events.size} events")
         eventsMap = events.groupBy { getDateKey(it.event.date) }
+        // Log détaillé des événements pour déboguer
+        events.forEach { event ->
+            Log.d("CalendarAdapter", "Event: ${event.event.title} on ${java.text.SimpleDateFormat("dd/MM/yyyy", java.util.Locale.getDefault()).format(java.util.Date(event.event.date))}")
+        }
         notifyDataSetChanged()
     }
     
@@ -57,6 +61,11 @@ class CalendarAdapter(
             val context = binding.root.context
             val dayEvents = eventsMap[getDateKey(calendarDay.date)] ?: emptyList()
             
+            // Log pour déboguer
+            if (dayEvents.isNotEmpty()) {
+                Log.d("CalendarAdapter", "Day ${calendarDay.dayOfMonth} (${if(calendarDay.isCurrentMonth) "current" else "adjacent"} month) has ${dayEvents.size} events")
+            }
+            
             // Filtrer seulement les événements de type journée (avec eventType)
             val dayTypeEvents = dayEvents.filter { it.eventType != null }
             
@@ -66,17 +75,36 @@ class CalendarAdapter(
                     // Use the first day type event's color as day background
                     val eventColor = dayTypeEvents.first().eventType?.color ?: "#8E24AA"
                     try {
-                        binding.dayContainer.setBackgroundColor(Color.parseColor(eventColor))
+                        val color = Color.parseColor(eventColor)
+                        // Si ce n'est pas le mois courant, appliquer un effet grisé (alpha réduit)
+                        val finalColor = if (!calendarDay.isCurrentMonth) {
+                            Color.argb(80, Color.red(color), Color.green(color), Color.blue(color))
+                        } else {
+                            color
+                        }
+                        binding.dayContainer.setBackgroundColor(finalColor)
                         binding.tvDayNumber.setTextColor(
-                            ContextCompat.getColor(context, android.R.color.white)
+                            if (calendarDay.isCurrentMonth) {
+                                ContextCompat.getColor(context, android.R.color.white)
+                            } else {
+                                ContextCompat.getColor(context, R.color.text_secondary)
+                            }
                         )
                     } catch (e: IllegalArgumentException) {
                         // Fallback to default colors if color parsing fails
-                        binding.dayContainer.setBackgroundColor(
-                            ContextCompat.getColor(context, R.color.event_purple)
-                        )
+                        val defaultColor = ContextCompat.getColor(context, R.color.event_purple)
+                        val finalColor = if (!calendarDay.isCurrentMonth) {
+                            Color.argb(80, Color.red(defaultColor), Color.green(defaultColor), Color.blue(defaultColor))
+                        } else {
+                            defaultColor
+                        }
+                        binding.dayContainer.setBackgroundColor(finalColor)
                         binding.tvDayNumber.setTextColor(
-                            ContextCompat.getColor(context, android.R.color.white)
+                            if (calendarDay.isCurrentMonth) {
+                                ContextCompat.getColor(context, android.R.color.white)
+                            } else {
+                                ContextCompat.getColor(context, R.color.text_secondary)
+                            }
                         )
                     }
                 }
@@ -128,11 +156,15 @@ class CalendarAdapter(
                     // Afficher le nombre de rendez-vous dans le badge
                     binding.tvAppointmentCount.text = appointmentCount.toString()
                     binding.tvAppointmentCount.visibility = android.view.View.VISIBLE
+                    // Appliquer un effet grisé si ce n'est pas le mois courant
+                    binding.tvAppointmentCount.alpha = if (calendarDay.isCurrentMonth) 1.0f else 0.5f
                 }
                 appointmentCount > 3 -> {
                     // Afficher "3+" pour plus de 3 rendez-vous
                     binding.tvAppointmentCount.text = "3+"
                     binding.tvAppointmentCount.visibility = android.view.View.VISIBLE
+                    // Appliquer un effet grisé si ce n'est pas le mois courant
+                    binding.tvAppointmentCount.alpha = if (calendarDay.isCurrentMonth) 1.0f else 0.5f
                 }
                 else -> {
                     // Pas de rendez-vous avec heure
